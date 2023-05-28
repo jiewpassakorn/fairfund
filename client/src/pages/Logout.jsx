@@ -1,19 +1,13 @@
-import React from 'react'
-import { useAddress, useLogout , useDisconnect } from "@thirdweb-dev/react";
-
+import React from "react";
+import { useAddress, useLogout, useDisconnect } from "@thirdweb-dev/react";
 
 const Logout = () => {
-    const { logout, isLoading } = useLogout();
-    const address = useAddress();
-    const { disconnect } = useDisconnect();
-    
-    console.log("address => ",address);
+  const { logout, isLoading } = useLogout();
+  const address = useAddress();
+  console.log("address => ", address);
+  const { disconnect } = useDisconnect();
 
-    return (
-      
-      <button>{address ? 'Sign Out' : 'Sign In'}</button>
-      
-    );
-}
+  return <button>{address ? "Sign Out" : "Sign In"}</button>;
+};
 
-export default Logout
+export default Logout;
