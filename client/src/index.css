@@ -37,7 +37,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 body {
   background-color: #1d1e22;
-  font-family: sans-serif;
 }
 
 .bg-blur {
