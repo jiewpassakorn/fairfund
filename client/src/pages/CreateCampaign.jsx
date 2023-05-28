@@ -10,7 +10,7 @@ import { checkIfImage } from "../utils";
 const CreateCampaign = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const { createCampaign } = useStateContext();
+  const { createCampaign, address } = useStateContext();
   const [form, setForm] = useState({
     name: "",
     title: "",
@@ -55,15 +55,13 @@ const CreateCampaign = () => {
 
       <form
         onSubmit={handleSubmit}
-        className="w-full mt-[65px] flex flex-col gap-[30px]"
-      >
+        className="w-full mt-[65px] flex flex-col gap-[30px]">
         <div className="flex flex-wrap gap-[40px]">
           <FormField
-            labelName="Your Name *"
-            placeholder="John Doe"
+            labelName="Owner Address"
             inputType="text"
-            value={form.name}
-            handleChange={(e) => handleFormFieldChange("name", e)}
+            isDisabled
+            placeholder={address}
           />
           <FormField
             labelName="Campaign Title *"
