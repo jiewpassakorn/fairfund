@@ -220,7 +220,7 @@ const contract = new ethers.Contract(contractAddress, contractABI, provider);
 // Test contract interaction
 async function testContractInteraction() {
   try {
-    const result = await contract.getCampaigns(); // Replace with the actual function you want to test
+    const result = await contract.getDonators(); // Replace with the actual function you want to test
     console.log('Contract interaction result:', result);
   } catch (error) {
     console.error('Contract interaction error:', error);

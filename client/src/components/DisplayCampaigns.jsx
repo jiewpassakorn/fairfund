@@ -10,6 +10,7 @@ const DisplayCampaigns = ({ title, isLoading, campaigns }) => {
   const handleNavigate = (campaign) => {
     navigate(`/campaign-details/${campaign.title}`, { state: campaign });
   };
+  // console.log("DISPLAY => ",campaigns);
 
   return (
     <div>
@@ -30,7 +31,7 @@ const DisplayCampaigns = ({ title, isLoading, campaigns }) => {
 
         {!isLoading && campaigns.length > 0 && campaigns.map((campaign) => (
           <FundCard
-            key={campaign.id}
+            key={campaign.pId}
             {...campaign}
             handleClick={() => handleNavigate(campaign)}
           />
