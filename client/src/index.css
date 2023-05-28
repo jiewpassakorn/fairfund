@@ -54,3 +54,13 @@ body {
   filter: blur(150px);
   z-index: -1;
 }
+
+.text-gradient {
+  background: linear-gradient(to right, #30cfd0, #c43ad6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-glow {
+  text-shadow: 0 0 3px rgb(192 219 255 / 75%), 0 0 12px rgb(65 120 255 / 24%);
+}
