@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Helmet } from "react-helmet";
 
 import { DisplayCampaigns } from "../components";
 import { useStateContext } from "../context";
@@ -21,11 +22,16 @@ const Profile = () => {
   }, [address, contract]);
 
   return (
-    <DisplayCampaigns
-      title="Your Campaigns"
-      isLoading={isLoading}
-      campaigns={campaigns}
-    />
+    <>
+      <Helmet>
+        <title>FairFund | My Campaign</title>
+      </Helmet>
+      <DisplayCampaigns
+        title="Your Campaigns"
+        isLoading={isLoading}
+        campaigns={campaigns}
+      />
+    </>
   );
 };
 

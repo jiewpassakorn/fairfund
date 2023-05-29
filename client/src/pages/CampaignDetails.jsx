@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { ethers } from "ethers";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 
 import { useStateContext } from "../context";
 import { CountBox, CustomButton, Loader } from "../components";
 import { calculateBarPercentage, daysLeft } from "../utils";
-import { thirdweb, fairfund } from "../assets";
+import { fairfund, backIcon } from "../assets";
 
 const CampaignDetails = () => {
   const { state } = useLocation();
@@ -38,10 +37,19 @@ const CampaignDetails = () => {
   };
 
   return (
-    <div>
+    <div className="mt-[90px]">
       {isLoading && <Loader />}
-
-      <div className="w-full flex md:flex-row flex-col mt-10 gap-[30px]">
+      <div className="flex items-baseline">
+        <Link
+          to="/"
+          className={`w-[36px] h-[36px] rounded-[10px] flex justify-center items-center bg-[#2c2f32] cursor-pointer mr-2 `}>
+          <img src={backIcon} alt="" className="w-[16px] h-[16px] " />
+        </Link>
+        <span className="font-epilogue font-semibold text-[20px] text-white uppercase ">
+          CAMPAIGN: {state.title}
+        </span>
+      </div>
+      <div className="w-full flex md:flex-row flex-col mt-5 gap-[30px] ">
         <div className="flex-1 flex-col">
           <img
             src={state.image}
@@ -57,11 +65,9 @@ const CampaignDetails = () => {
                   state.amountCollected
                 )}%`,
                 maxWidth: "100%",
-              }}
-            ></div>
+              }}></div>
           </div>
         </div>
-
         <div className="flex md:w-[150px] w-full flex-wrap justify-between gap-[30px]">
           <CountBox title="Days Left" value={remainingDays} />
           <CountBox
@@ -71,7 +77,6 @@ const CampaignDetails = () => {
           <CountBox title="Total Backers" value={donators.length} />
         </div>
       </div>
-
       <div className="mt-[60px] flex lg:flex-row flex-col gap-5">
         <div className="flex-[2] flex flex-col gap-[40px]">
           <div>
@@ -120,8 +125,7 @@ const CampaignDetails = () => {
                 donators.map((item, index) => (
                   <div
                     key={`${item.donator}-${index}`}
-                    className="flex justify-between items-center gap-4"
-                  >
+                    className="flex justify-between items-center gap-4">
                     <p className="font-epilogue font-normal text-[16px] text-[#b2b3bd] leading-[26px] break-ll">
                       {index + 1}. {item.donator}
                     </p>
