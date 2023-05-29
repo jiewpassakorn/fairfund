@@ -15,7 +15,8 @@ const Icon = ({ styles, name, imgUrl, isActive, disabled, handleClick }) => (
     } flex justify-center items-center ${
       !disabled && "cursor-pointer"
     } ${styles}`}
-    onClick={handleClick}>
+    onClick={handleClick}
+  >
     {!isActive ? (
       <img src={imgUrl} alt="fund_logo" className="w-1/2 h-1/2" />
     ) : (
@@ -36,11 +37,11 @@ const NavbarV2 = () => {
   const disconnect = useDisconnect();
 
   return (
-    <nav className="bg-white bg-transparent dark:bg-gray-900 fixed w-full z-20 top-0 left-0 border-b border-gray-200 dark:border-gray-600">
+    <nav className="bg-transparent bg-gray-900 fixed w-full z-20 top-0 left-0 border-b border-gray-600 ">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <Link to="/" className="flex items-center">
           <img src={fairfund} className="h-8 mr-3" alt="" />
-          <span className="self-center text-2xl font-epilogue font-bold whitespace-nowrap dark:text-white">
+          <span className="self-center text-2xl font-epilogue font-bold whitespace-nowrap text-white">
             FairFund
           </span>
         </Link>
@@ -66,7 +67,8 @@ const NavbarV2 = () => {
 
         <div
           className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
-          id="navbar-sticky">
+          id="navbar-sticky"
+        >
           <ul className="flex flex-row ">
             {navlinks.map((link) => (
               <li
@@ -78,7 +80,8 @@ const NavbarV2 = () => {
                   setIsActive(link.name);
                   setToggleDrawer(false);
                   navigate(link.link);
-                }}>
+                }}
+              >
                 <div className="flex items-center justify-center">
                   <img
                     src={link.imgUrl}
@@ -92,7 +95,8 @@ const NavbarV2 = () => {
                       isActive === link.name
                         ? "text-[#1dc071]"
                         : "text-[#808191]"
-                    }`}>
+                    }`}
+                  >
                     {link.name}
                   </p>
                 </div>
@@ -104,7 +108,8 @@ const NavbarV2 = () => {
         <div
           className={`absolute top-[60px] right-0 left-0 bg-[#1c1c24] z-10 shadow-secondary py-2  ${
             !toggleDrawer ? "-translate-y-[100vh]" : "translate-y-[4vh]"
-          } transition-all duration-700 rounded-[20px] md:hidden`}>
+          } transition-all duration-700 rounded-[20px] md:hidden`}
+        >
           <ul className="mb-4 ">
             {navlinks.map((link) => (
               <li
@@ -116,7 +121,8 @@ const NavbarV2 = () => {
                   setIsActive(link.name);
                   setToggleDrawer(false);
                   navigate(link.link);
-                }}>
+                }}
+              >
                 <img
                   src={link.imgUrl}
                   alt={link.name}
@@ -127,7 +133,8 @@ const NavbarV2 = () => {
                 <p
                   className={`ml-[20px] font-epilogue font-semibold text-[14px] ${
                     isActive === link.name ? "text-[#1dc071]" : "text-[#808191]"
-                  }`}>
+                  }`}
+                >
                   {link.name}
                 </p>
               </li>
