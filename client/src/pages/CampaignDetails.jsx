@@ -150,9 +150,13 @@ const CampaignDetails = () => {
                     </p>
                   </div>
                 ))
+              ) : remainingDays > 0 ? (
+                <p className="font-epilogue font-normal text-[16px] text-[#808191] leading-[26px] text-justify">
+                  No Donators Yet. Be the first one!
+                </p>
               ) : (
                 <p className="font-epilogue font-normal text-[16px] text-[#808191] leading-[26px] text-justify">
-                  No donators yet. Be the first one!
+                  No Donators.
                 </p>
               )}
             </div>
@@ -168,10 +172,11 @@ const CampaignDetails = () => {
             <p className="font-epilogue fount-medium text-[20px] leading-[30px] text-center text-[#808191]">
               Fund the campaign
             </p>
-            <div className="mt-[30px]">
+            <div className="mt-[10px]">
               <input
                 type="number"
-                placeholder="ETH 0.1"
+                disabled={remainingDays <= 0}
+                placeholder={remainingDays > 0 ? "ETH 0.1" : "Can't Fund"}
                 step="0.01"
                 className="w-full py-[10px] sm:px-[20px] px-[15px] outline-none border-[1px] border-[#3a3a43] bg-transparent font-epilogue text-white text-[18px] leading-[30px] placeholder:text-[#4b5264] rounded-[10px]"
                 value={amount}
