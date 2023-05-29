@@ -64,16 +64,20 @@ const CampaignDetails = () => {
             alt="campaign"
             className="w-full h-[410px] object-cover rounded-xl"
           />
-          <div className="relative w-full h-[5px] bg-[#3a3a43] mt-2">
+          <div className="font-epilogue font-semibold relative w-full h-[20px] bg-[#3a3a43] mt-3 rounded-full text-center text-white text-[14px]">
             <div
-              className="absolute h-full bg-[#4acd8d]"
+              className="absolute h-full bg-[#6645f7] rounded-full"
               style={{
                 width: `${calculateBarPercentage(
                   state.target,
                   state.amountCollected
                 )}%`,
                 maxWidth: "100%",
-              }}></div>
+              }}>
+              <span className={`${state.amountCollected ? "ml-2" : ""}`}>
+                {Math.round((state.amountCollected / state.target) * 100)}%
+              </span>
+            </div>
           </div>
         </div>
         <div className="flex md:w-[150px] w-full flex-wrap justify-between gap-[30px]">

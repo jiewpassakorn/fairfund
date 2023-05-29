@@ -90,7 +90,7 @@ const NavbarV2 = () => {
                   <p
                     className={`mt-[2px] ml-[8px] font-epilogue font-semibold text-[14px] ${
                       isActive === link.name
-                        ? "text-[#1dc071]"
+                        ? "text-[#6645f7]"
                         : "text-[#808191]"
                     }`}>
                     {link.name}

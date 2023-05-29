@@ -1,7 +1,8 @@
 import React from "react";
 
 import { tagType, thirdweb, fairfund } from "../assets";
-import { daysLeft } from "../utils";
+import { daysLeft, calculateBarPercentage } from "../utils";
+import { Progress } from "flowbite-react";
 
 const FundCard = ({
   owner,
@@ -18,8 +19,7 @@ const FundCard = ({
   return (
     <div
       className="sm:w-[288px] w-full rounded-[15px] bg-[#1c1c24] cursor-pointer"
-      onClick={handleClick}
-    >
+      onClick={handleClick}>
       <img
         src={image}
         alt="fund"
@@ -38,20 +38,44 @@ const FundCard = ({
           </p>
         </div>
 
-        <div className="block">
+        <div className="flex justify-between">
           <h3 className="font-epilogue font-semibold text-[16px] text-white text-left leading-[26px] truncate">
             {title}
           </h3>
-          <p className="mt-[5px] font-epilogue font-normal text-[#808191] text-left leading-[18px] truncate">
-            {description}
-          </p>
+          <div>
+            <span
+              className={`inline-flex items-center ${
+                remainingDays > 0
+                  ? "text-green-100 bg-green-800"
+                  : "text-red-100 bg-red-800"
+              }  text-xs font-medium px-2.5 py-0.5 rounded-full`}>
+              <span
+                className={`w-2 h-2 mr-1 ${
+                  remainingDays > 0 ? "bg-green-500" : "bg-red-500"
+                }  rounded-full`}></span>
+              {remainingDays > 0 ? "Available" : "Unavailable"}
+            </span>
+          </div>
         </div>
+        <p className="mt-[5px] font-epilogue font-normal text-[#808191] text-left leading-[18px] truncate">
+          {description}
+        </p>
 
         <div className="flex justify-between flex-wrap mt-[15px] gap-2">
           <div className="flex flex-col">
             <h4 className="font-epilogue font-semibold text-[14px] text-[#b2b3bd] leading-[22px]">
               {amountCollected}
             </h4>
+            <div className="font-epilogue font-semibold relative w-[6rem] h-[5px] bg-[#3a3a43] my-1 rounded-full">
+              <div
+                className="absolute h-full bg-[#6645f7] rounded-full"
+                style={{
+                  width: `${calculateBarPercentage(target, amountCollected)}%`,
+                  maxWidth: "100%",
+                }}>
+                <span className={`${amountCollected ? "ml-2" : ""}`}></span>
+              </div>
+            </div>
             <p className="mt-[3px] font-epilogue font-normal text-[12px] leading-[18px] text-[#808191] sm:max-w-[120px] truncate">
               Raised of {target}
             </p>
