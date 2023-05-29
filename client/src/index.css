@@ -21,6 +21,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   box-shadow: rgba(var(--primary-color), 0.5) 0px 0px 20px 0px;
 }
 
+.text-glows:active {
+  color: green;
+}
+
+.text-glows:hover {
+  color: rgb(255, 255, 255);
+}
+
 .btn-gradient-border {
   color: rgba(var(--text-color));
   border: 2px double transparent;

@@ -7,6 +7,7 @@ import { logo, menu, search, thirdweb, fairfund } from "../assets";
 import { navlinks } from "../constants";
 import { useDisconnect } from "@thirdweb-dev/react";
 import "./CustomButton.css";
+import "../index.css";
 
 const Icon = ({ styles, name, imgUrl, isActive, disabled, handleClick }) => (
   <div
@@ -79,7 +80,7 @@ const NavbarV2 = () => {
                   setToggleDrawer(false);
                   navigate(link.link);
                 }}>
-                <div className="flex items-center justify-center">
+                <div className=" flex items-center justify-center">
                   <img
                     src={link.imgUrl}
                     alt={link.name}
@@ -88,7 +89,7 @@ const NavbarV2 = () => {
                     }`}
                   />
                   <p
-                    className={`mt-[2px] ml-[8px] font-epilogue font-semibold text-[14px] ${
+                    className={`text-glows mt-[2px] ml-[8px] font-epilogue font-semibold text-[14px] ${
                       isActive === link.name
                         ? "text-[#6645f7]"
                         : "text-[#808191]"
