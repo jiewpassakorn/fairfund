@@ -27,7 +27,15 @@ const CampaignDetails = () => {
     if (contract) fetchDonators();
   }, [contract, address]);
 
-  const handleDonate = async () => {
+  const handleDonate = async (e) => {
+    e.preventDefault();
+
+    if (amount === "" || parseFloat(amount) <= 0) {
+      if (amount === "") alert("Please enter amount");
+      else alert("Invalid amount");
+      return;
+    }
+
     setIsLoading(true);
 
     await donate(state.pId, amount);
@@ -172,12 +180,20 @@ const CampaignDetails = () => {
                 </p>
               </div>
 
-              <CustomButton
-                btnType="button"
-                title="Fund Campaign"
-                styles="w-full bg-[#8c6dfd]"
-                handleClick={handleDonate}
-              />
+              {remainingDays > 0 ? (
+                <CustomButton
+                  btnType="button"
+                  title="Fund Campaign"
+                  styles="w-full bg-[#8c6dfd]"
+                  handleClick={handleDonate}
+                />
+              ) : (
+                <CustomButton
+                  btnType="button"
+                  title="OUT OF DATE"
+                  styles="w-full bg-[#8c6dfd]"
+                />
+              )}
             </div>
           </div>
         </div>
