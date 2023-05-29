@@ -10,7 +10,7 @@ import { checkIfImage } from "../utils";
 const CreateCampaign = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const { createCampaign, address } = useStateContext();
+  const { createCampaign, address, connect } = useStateContext();
   const [form, setForm] = useState({
     name: "",
     title: "",
@@ -49,7 +49,18 @@ const CreateCampaign = () => {
       {isLoading && <Loader />}
       <div className="btn-glow btn-gradient-border flex justify-center items-center p-[16px] sm:min-w-[380px] bg-[#3a3a43] rounded-[10px]">
         <h1 className="font-epilogue font-bold sm:text-[25px] text-[18px] leading-[38px] text-white">
-          {address ? "Start a Campaign" : "Please Connect Your Wallet"}
+          {address ? (
+            <h1 className="font-epilogue font-bold sm:text-[25px] text-[18px] leading-[38px] text-white">
+              Start a Campaign
+            </h1>
+          ) : (
+            <button
+              // onClick={connect}
+              className="font-epilogue font-bold sm:text-[25px] text-[18px] leading-[38px] text-white"
+            >
+              Please Connect Your Wallet
+            </button>
+          )}
         </h1>
       </div>
 
