@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Helmet } from "react-helmet";
 
 import { DisplayCampaigns } from "../components";
 import { useStateContext } from "../context";
@@ -21,11 +22,16 @@ const Home = () => {
   }, [address, contract]);
 
   return (
-    <DisplayCampaigns
-      title="All Campaigns"
-      isLoading={isLoading}
-      campaigns={campaigns}
-    />
+    <>
+      <Helmet>
+        <title>FairFund | All Campaigns</title>
+      </Helmet>
+      <DisplayCampaigns
+        title="All Campaigns"
+        isLoading={isLoading}
+        campaigns={campaigns}
+      />
+    </>
   );
 };
 

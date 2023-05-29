@@ -1,22 +1,24 @@
-import createCampaign from './create-campaign.svg';
-import dashboard from './dashboard.svg';
-import logo from './logo.svg';
-import logout from './logout.svg';
-import payment from './payment.svg';
-import profile from './profile.svg';
-import sun from './sun.svg';
-import withdraw from './withdraw.svg';
-import tagType from './type.svg';
-import search from './search.svg';
-import menu from './menu.svg';
-import money from './money.svg';
-import loader from './loader.svg';
-import thirdweb from './thirdweb.png';
-import fairfund from './fairfund.svg';
+import ownCampaign from "./own-campaign.svg";
+import dashboard from "./dashboard.svg";
+import logo from "./logo.svg";
+import logout from "./logout.svg";
+import payment from "./payment.svg";
+import profile from "./profile.svg";
+import sun from "./sun.svg";
+import withdraw from "./withdraw.svg";
+import tagType from "./type.svg";
+import search from "./search.svg";
+import menu from "./menu.svg";
+import money from "./money.svg";
+import loader from "./loader.svg";
+import thirdweb from "./thirdweb.png";
+import fairfund from "./fairfund.svg";
+import newCampaign from "./file-new-icon.svg";
+import backIcon from "./back-icon.svg";
 
 export {
   tagType,
-  createCampaign,
+  ownCampaign,
   dashboard,
   logo,
   logout,
@@ -30,4 +32,6 @@ export {
   loader,
   thirdweb,
   fairfund,
+  newCampaign,
+  backIcon,
 };
