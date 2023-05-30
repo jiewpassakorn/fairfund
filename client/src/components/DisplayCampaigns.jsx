@@ -3,7 +3,6 @@ import { useNavigate, Link } from "react-router-dom";
 
 import FundCard from "./FundCard";
 import { loader } from "../assets";
-import { daysLeft } from "../utils";
 import { fairfund, backIcon, dashboard } from "../assets";
 import {
   Tabs,
@@ -13,32 +12,12 @@ import {
   TabPanel,
 } from "@material-tailwind/react";
 
-const DisplayCampaigns = ({ title, isLoading, campaigns }) => {
+const DisplayCampaigns = ({ title, isLoading, campaigns, data }) => {
   const navigate = useNavigate();
 
   const handleNavigate = (campaign) => {
     navigate(`/campaign-details/${campaign.title}`, { state: campaign });
   };
-
-  const availableCampaigns = campaigns.filter(
-    (campaign) => daysLeft(campaign.deadline) > 0
-  );
-  const unavailableCampaigns = campaigns.filter(
-    (campaign) => daysLeft(campaign.deadline) <= 0
-  );
-
-  const data = [
-    {
-      label: "Available",
-      value: "available",
-      filteredcampaigns: availableCampaigns,
-    },
-    {
-      label: "Unavailable",
-      value: "unavailable",
-      filteredcampaigns: unavailableCampaigns,
-    },
-  ];
 
   return (
     <div className="mt-[90px]">
@@ -81,20 +60,7 @@ const DisplayCampaigns = ({ title, isLoading, campaigns }) => {
               key={value}
               value={value}
               className="flex flex-wrap gap-[26px]">
-              {console.log(value, filteredcampaigns.length)}
-              {/* {filteredcampaigns.length < 0 ? (
-                <div>
-                  <p>There are no campaign</p>
-                </div>
-              ) : (
-                filteredcampaigns.map((campaign) => (
-                  <FundCard
-                    key={campaign.pId}
-                    {...campaign}
-                    handleClick={() => handleNavigate(campaign)}
-                  />
-                ))
-              )} */}
+              {/* {console.log(value, filteredcampaigns.length)} */}
               {filteredcampaigns.map((campaign) => (
                 <FundCard
                   key={campaign.pId}
