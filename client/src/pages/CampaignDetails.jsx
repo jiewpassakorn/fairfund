@@ -39,10 +39,22 @@ const CampaignDetails = () => {
 
     setIsLoading(true);
 
-    await donate(state.pId, amount);
+    try {
+      await donate(state.pId, amount);
 
-    navigate("/");
-    setIsLoading(false);
+      navigate("/");
+    } catch (error) {
+      if (error.message.includes("user rejected transaction")) {
+        alert("Transaction rejected by the user");
+      } else {
+        console.error(error);
+        alert(
+          "An error occurred during the transaction. Please try again later."
+        );
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -55,7 +67,7 @@ const CampaignDetails = () => {
           <img src={backIcon} alt="" className="w-[16px] h-[16px] " />
         </Link>
         <span className="font-epilogue font-semibold text-[20px] text-white uppercase ">
-          CAMPAIGN: {state.title}
+          CAMPAIGN : {state.title}
         </span>
       </div>
       <div className="w-full flex md:flex-row flex-col mt-5 gap-[30px] ">

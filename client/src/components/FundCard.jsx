@@ -48,7 +48,7 @@ const FundCard = ({
                 remainingDays > 0
                   ? "text-green-100 bg-green-800"
                   : "text-red-100 bg-red-800"
-              }  text-xs font-medium px-2.5 py-0.5 rounded-full`}>
+              }  text-xs font-epilogue px-2.5 py-0.5 rounded-full`}>
               <span
                 className={`w-2 h-2 mr-1 ${
                   remainingDays > 0 ? "bg-green-500" : "bg-red-500"

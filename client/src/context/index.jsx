@@ -27,7 +27,7 @@ export const StateContextProvider = ({ children }) => {
     try {
       const data = await createCampaign({
         args: [
-          address, //owner
+          address, // owner
           form.title,
           form.description,
           form.target,
@@ -35,17 +35,16 @@ export const StateContextProvider = ({ children }) => {
           form.image,
         ],
       });
-      console.log("contract call success ", data);
+      console.log("Contract call successful");
     } catch (error) {
-      console.log(
-        "contract call success ",
-        form.title,
-        form.description,
-        form.target,
-        new Date(form.deadline).getTime(),
-        form.image
-      );
-      console.log("contract call failed ", error);
+      if (error.message.includes("user rejected transaction")) {
+        alert("Transaction rejected by the user");
+      } else {
+        console.error(error);
+        alert(
+          "An error occurred during the transaction. Please try again later."
+        );
+      }
     }
   };
 
@@ -115,8 +114,7 @@ export const StateContextProvider = ({ children }) => {
         getUserCampaigns,
         donate,
         getDonations,
-      }}
-    >
+      }}>
       {children}
     </StateContext.Provider>
   );
