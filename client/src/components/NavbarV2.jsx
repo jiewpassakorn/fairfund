@@ -60,7 +60,7 @@ const NavbarV2 = () => {
           <img
             src={menu}
             alt="menu"
-            className="w-[52px] h-[52px] object-contain cursor-pointer inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+            className="w-[52px] h-[52px] object-contain cursor-pointer inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
             onClick={() => setToggleDrawer((prev) => !prev)}
           />
         </div>
@@ -80,18 +80,18 @@ const NavbarV2 = () => {
                   setToggleDrawer(false);
                   navigate(link.link);
                 }}>
-                <div className=" flex items-center justify-center">
-                  <img
+                <div className="flex items-center justify-center ">
+                  {/* <img
                     src={link.imgUrl}
                     alt={link.name}
-                    className={`w-[20px] h-[20px] ${
+                    className={`w-[20px] h-[20px]  ${
                       isActive === link.name ? "grayscale-0" : "grayscale"
                     }`}
-                  />
+                  /> */}
                   <p
-                    className={`text-glows mt-[2px] ml-[8px] font-epilogue font-semibold text-[14px] ${
+                    className={`text-glows font-epilogue font-semibold text-[14px] ${
                       isActive === link.name
-                        ? "text-[#6645f7]"
+                        ? "text-white" // "text-[#6645f7]"
                         : "text-[#808191]"
                     }`}>
                     {link.name}
