@@ -64,7 +64,6 @@ const CampaignDetails = () => {
       setIsLoading(false);
     }
   };
-  console.log(state.title);
 
   return (
     <div className="mt-[90px] ">
