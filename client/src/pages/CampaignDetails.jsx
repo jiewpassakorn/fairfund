@@ -63,7 +63,7 @@ const CampaignDetails = () => {
       <div className="flex items-baseline ">
         <Link
           to="/"
-          className={`w-[36px] h-[36px] rounded-[10px] flex justify-center items-center bg-[#2c2f32] cursor-pointer mr-2 `}>
+          className={`btn-glow w-[36px] h-[36px] rounded-[10px] flex justify-center items-center bg-[#2c2f32] cursor-pointer mr-2 `}>
           <img src={backIcon} alt="" className="w-[16px] h-[16px] " />
         </Link>
         <span className="font-epilogue font-semibold text-[20px] text-white uppercase ">
