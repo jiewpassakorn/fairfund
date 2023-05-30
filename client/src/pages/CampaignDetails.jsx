@@ -5,6 +5,14 @@ import { useStateContext } from "../context";
 import { CountBox, CustomButton, Loader } from "../components";
 import { calculateBarPercentage, daysLeft } from "../utils";
 import { fairfund, backIcon } from "../assets";
+import {
+  FacebookShareButton,
+  FacebookIcon,
+  FacebookMessengerShareButton,
+  FacebookMessengerIcon,
+  TwitterShareButton,
+  TwitterIcon,
+} from "react-share";
 import "../index.css";
 
 const CampaignDetails = () => {
@@ -56,6 +64,7 @@ const CampaignDetails = () => {
       setIsLoading(false);
     }
   };
+  console.log(state.title);
 
   return (
     <div className="mt-[90px] ">
@@ -70,6 +79,7 @@ const CampaignDetails = () => {
           CAMPAIGN : {state.title}
         </span>
       </div>
+
       <div className="w-full flex md:flex-row flex-col mt-5 gap-[30px] ">
         <div className="flex-1 flex-col">
           <img
@@ -93,6 +103,7 @@ const CampaignDetails = () => {
             </div>
           </div>
         </div>
+
         <div className="flex md:w-[150px] w-full flex-wrap justify-between gap-[30px] ">
           {remainingDays > 0 ? (
             <CountBox
@@ -110,7 +121,25 @@ const CampaignDetails = () => {
           <CountBox title="Total Backers" value={donators.length} />
         </div>
       </div>
-      <div className="mt-[60px] flex lg:flex-row flex-col gap-5">
+      <div className="  flex justify-left items-center cursor-pointer mt-[20px] ">
+        <div>
+          <FacebookShareButton
+            url={`http://localhost:5173/campaign-details/${state.title}`}
+            quote={`${state.title}`}
+            hashtag="#FAIRFUND">
+            <FacebookIcon size={32} round />
+          </FacebookShareButton>
+        </div>
+        <div className="ml-[10px]">
+          <FacebookMessengerShareButton
+            url={`http://localhost:5173/campaign-details/${state.title}`}
+            quote={`${state.title}`}
+            hashtag="#FAIRFUND">
+            <FacebookMessengerIcon size={32} round />
+          </FacebookMessengerShareButton>
+        </div>
+      </div>
+      <div className="mt-[20px] flex lg:flex-row flex-col gap-5">
         <div className="flex-[2] flex flex-col gap-[40px]">
           <div>
             <h4 className="font-epilogue font-semibold text-[18px] text-white uppercase">
