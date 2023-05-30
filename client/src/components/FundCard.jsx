@@ -2,7 +2,6 @@ import React from "react";
 
 import { tagType, thirdweb, fairfund } from "../assets";
 import { daysLeft, calculateBarPercentage } from "../utils";
-import { Progress } from "flowbite-react";
 
 const FundCard = ({
   owner,
