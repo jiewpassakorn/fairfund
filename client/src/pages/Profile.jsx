@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet";
 
 import { DisplayCampaigns } from "../components";
 import { useStateContext } from "../context";
+import { daysLeft } from "../utils";
 
 const Profile = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,6 +18,26 @@ const Profile = () => {
     setIsLoading(false);
   };
 
+  const availableCampaigns = campaigns.filter(
+    (campaign) => daysLeft(campaign.deadline) > 0
+  );
+  const unavailableCampaigns = campaigns.filter(
+    (campaign) => daysLeft(campaign.deadline) <= 0
+  );
+
+  const data = [
+    {
+      label: "Available",
+      value: "available",
+      filteredcampaigns: availableCampaigns,
+    },
+    {
+      label: "Unavailable",
+      value: "unavailable",
+      filteredcampaigns: unavailableCampaigns,
+    },
+  ];
+
   useEffect(() => {
     if (contract) fetchCampaigns();
   }, [address, contract]);
@@ -30,6 +51,7 @@ const Profile = () => {
         title="Your Campaigns"
         isLoading={isLoading}
         campaigns={campaigns}
+        data={data}
       />
     </>
   );
