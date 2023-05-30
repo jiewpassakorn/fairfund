@@ -64,7 +64,7 @@ const FundCard = ({
         <div className="flex justify-between flex-wrap mt-[15px] gap-2">
           <div className="flex flex-col">
             <h4 className="font-epilogue font-semibold text-[14px] text-[#b2b3bd] leading-[22px]">
-              {amountCollected}
+              {amountCollected} ETH
             </h4>
             <div className="font-epilogue font-semibold relative w-[6rem] h-[5px] bg-[#3a3a43] my-1 rounded-full">
               <div
@@ -77,7 +77,7 @@ const FundCard = ({
               </div>
             </div>
             <p className="mt-[3px] font-epilogue font-normal text-[12px] leading-[18px] text-[#808191] sm:max-w-[120px] truncate">
-              Raised of {target}
+              Raised of {target} ETH
             </p>
           </div>
           <div className="flex flex-col">

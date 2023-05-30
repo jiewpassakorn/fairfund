@@ -8,12 +8,12 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        epilogue: ["Epilogue", "sans-serif"],
+        epilogue: ["Ubuntu", "sans-serif"],
       },
       boxShadow: {
         secondary: "10px 10px 20px rgba(2, 2, 2, 0.25)",
       },
     },
   },
-  plugins: [require("flowbite/plugin")],
+  plugins: [require("flowbite/plugin"), require("tailwind-scrollbar")],
 };

@@ -5,6 +5,7 @@ import { useStateContext } from "../context";
 import { CountBox, CustomButton, Loader } from "../components";
 import { calculateBarPercentage, daysLeft } from "../utils";
 import { fairfund, backIcon } from "../assets";
+import "../index.css";
 
 const CampaignDetails = () => {
   const { state } = useLocation();
@@ -45,9 +46,9 @@ const CampaignDetails = () => {
   };
 
   return (
-    <div className="mt-[90px]">
+    <div className="mt-[90px] ">
       {isLoading && <Loader />}
-      <div className="flex items-baseline">
+      <div className="flex items-baseline ">
         <Link
           to="/"
           className={`w-[36px] h-[36px] rounded-[10px] flex justify-center items-center bg-[#2c2f32] cursor-pointer mr-2 `}>
@@ -80,7 +81,7 @@ const CampaignDetails = () => {
             </div>
           </div>
         </div>
-        <div className="flex md:w-[150px] w-full flex-wrap justify-between gap-[30px]">
+        <div className="flex md:w-[150px] w-full flex-wrap justify-between gap-[30px] ">
           {remainingDays > 0 ? (
             <CountBox
               title="Days Left"
@@ -172,11 +173,11 @@ const CampaignDetails = () => {
             Fund
           </h4>
 
-          <div className="mt-[20px] flex flex-col p-4 bg-[#1c1c24] rounded-[10px]">
-            <p className="font-epilogue fount-medium text-[20px] leading-[30px] text-center text-[#808191]">
+          <div className="mt-[20px] flex flex-col p-4 bg-[#1c1c24] rounded-[10px] ">
+            <p className="font-epilogue fount-medium text-[20px] leading-[30px] text-center text-[#808191] ">
               Fund the campaign
             </p>
-            <div className="mt-[10px]">
+            <div className="mt-[10px] ">
               <input
                 type="number"
                 disabled={remainingDays <= 0}

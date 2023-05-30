@@ -22,7 +22,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .text-glows:active {
-  color: green;
+  color: white;
 }
 
 .text-glows:hover {
@@ -71,4 +71,20 @@ body {
 
 .text-glow {
   text-shadow: 0 0 3px rgb(192 219 255 / 75%), 0 0 12px rgb(65 120 255 / 24%);
+}
+
+.no-scrollbar {
+  overflow: hidden;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  width: 0.5em;
+}
+
+.no-scrollbar::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.no-scrollbar::-webkit-scrollbar-thumb {
+  background-color: transparent;
 }
