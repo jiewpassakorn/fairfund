@@ -12,7 +12,7 @@ import menu from "./menu.svg";
 import money from "./money.svg";
 import loader from "./loader.svg";
 import thirdweb from "./thirdweb.png";
-import fairfund from "./fairfund.svg";
+import fairfund from "./FairFund.svg";
 import newCampaign from "./file-new-icon.svg";
 import backIcon from "./back-icon.svg";
 
