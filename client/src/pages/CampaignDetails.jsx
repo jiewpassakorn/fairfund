@@ -131,12 +131,12 @@ const CampaignDetails = () => {
           </FacebookShareButton>
         </div>
         <div className="ml-[10px]">
-          <FacebookMessengerShareButton
+          <TwitterShareButton
             url={`http://localhost:5173/campaign-details/${state.title}`}
             quote={`${state.title}`}
             hashtag="#FAIRFUND">
-            <FacebookMessengerIcon size={32} round />
-          </FacebookMessengerShareButton>
+            <TwitterIcon size={32} round />
+          </TwitterShareButton>
         </div>
       </div>
       <div className="mt-[20px] flex lg:flex-row flex-col gap-5">
