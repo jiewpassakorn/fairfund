@@ -123,7 +123,7 @@ const CampaignDetails = () => {
       <div className="flex justify-left items-center mt-[20px] ">
         <div>
           <FacebookShareButton
-            url={`http://localhost:5173/campaign-details/${state.title}`}
+            url={`https://fairfund.vercel.app/campaign-details/${state.title}`}
             quote={`${state.title}`}
             hashtag="#FAIRFUND">
             <FacebookIcon size={32} round />
@@ -131,7 +131,7 @@ const CampaignDetails = () => {
         </div>
         <div className="ml-[10px]">
           <TwitterShareButton
-            url={`http://localhost:5173/campaign-details/${state.title}`}
+            url={`https://fairfund.vercel.app/campaign-details/${state.title}`}
             quote={`${state.title}`}
             hashtag="#FAIRFUND">
             <TwitterIcon size={32} round />
