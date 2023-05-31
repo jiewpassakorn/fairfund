@@ -64,7 +64,6 @@ const CampaignDetails = () => {
       setIsLoading(false);
     }
   };
-  console.log(state.title);
 
   return (
     <div className="mt-[90px] ">
@@ -121,7 +120,7 @@ const CampaignDetails = () => {
           <CountBox title="Total Backers" value={donators.length} />
         </div>
       </div>
-      <div className="  flex justify-left items-center cursor-pointer mt-[20px] ">
+      <div className="flex justify-left items-center mt-[20px] ">
         <div>
           <FacebookShareButton
             url={`http://localhost:5173/campaign-details/${state.title}`}
