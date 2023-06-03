@@ -42,15 +42,25 @@ const DisplayCampaigns = ({ title, isLoading, campaigns, data }) => {
         )}
       </div>
       <Tabs value="available">
-        <TabsHeader>
+        <TabsHeader
+          className={
+            data.length === 2
+              ? "max-w-[20rem] rounded-full bg-[#3a3a43]"
+              : "max-w-[30rem] rounded-full bg-[#3a3a43]"
+          }
+          indicatorProps={{
+            className: "rounded-full bg-[#3a3a43]",
+          }}>
           {data.map(({ label, value }) => (
-            <Tab key={value} value={value}>
+            <Tab
+              key={value}
+              value={value}
+              className="font-epilogue text-white max-w-[10rem]">
               {label}
             </Tab>
           ))}
         </TabsHeader>
         <TabsBody
-          className="mt-2 "
           animate={{
             initial: { y: 250 },
             mount: { y: 0 },

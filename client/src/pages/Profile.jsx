@@ -24,6 +24,9 @@ const Profile = () => {
   const unavailableCampaigns = campaigns.filter(
     (campaign) => daysLeft(campaign.deadline) <= 0
   );
+  const historyCampaigns = campaigns.filter(
+    (campaign) => daysLeft(campaign.deadline) <= 0
+  );
 
   const data = [
     {
@@ -35,6 +38,11 @@ const Profile = () => {
       label: "Unavailable",
       value: "unavailable",
       filteredcampaigns: unavailableCampaigns,
+    },
+    {
+      label: "History",
+      value: "history",
+      filteredcampaigns: historyCampaigns,
     },
   ];
 
