@@ -15,9 +15,15 @@ contract FairFund {
     struct Campaign {
         CampaignData data;
         mapping(address => uint256) donatedAmounts; // Track individual donation amounts
-        mapping(address => bool) refundRequested; // Track refund requests
+        mapping(address => RefundRequest) refundRequests; // Track refund requests
         address[] donators;
         uint256[] donations;
+    }
+    
+    struct RefundRequest {
+        address requester;
+        uint256 amount;
+        bool processed;
     }
 
     mapping(uint256 => Campaign) public campaigns;
@@ -72,61 +78,62 @@ contract FairFund {
     function requestRefund(uint256 _id) public payable {
         Campaign storage campaign = campaigns[_id];
         require(campaign.data.amountCollected > 0, "No donations to refund.");
-        require(campaign.refundRequested[msg.sender] == false, "Refund already requested.");
 
         uint256 donationAmount = campaign.donatedAmounts[msg.sender];
         require(donationAmount > 0, "No donation from the sender.");
 
-        campaign.refundRequested[msg.sender] = true;
-
-        uint256 gasLimit = 300000; // Example gas limit (adjust as needed)
-        (bool sent, ) = payable(msg.sender).call{value: donationAmount, gas: gasLimit}("");
-        require(sent, "Failed to send refund.");
-    }
-
-    function processRefund(uint256 _id, address payable _donor) public payable {
-    Campaign storage campaign = campaigns[_id];
-    require(
-        campaign.data.owner == msg.sender,
-        "Only the campaign owner can process refunds."
-    );
-    require(
-        campaign.refundRequested[_donor],
-        "Refund not requested by the donor."
-    );
-
-    uint256 donationAmount = campaign.donatedAmounts[_donor];
-    require(donationAmount > 0, "No donation from the donor.");
-
-    campaign.data.amountCollected -= donationAmount;
-    campaign.donatedAmounts[_donor] = 0;
-    campaign.refundRequested[_donor] = false;
-
-    (bool sent, ) = _donor.call{value: donationAmount}("");
-    require(sent, "Failed to send refund.");
-    
-    // Remove the donor from the donators array
-    uint256 donorIndex;
-    for (uint256 i = 0; i < campaign.donators.length; i++) {
-        if (campaign.donators[i] == _donor) {
-            donorIndex = i;
-            break;
+        if (campaign.refundRequests[msg.sender].processed == true) {
+            campaign.refundRequests[msg.sender].processed = false;
+        } else {
+            campaign.refundRequests[msg.sender] = RefundRequest({
+                requester: msg.sender,
+                amount: donationAmount,
+                processed: false
+            });
         }
     }
-    if (donorIndex < campaign.donators.length - 1) {
-        // Move the last element to the position of the removed donor
-        campaign.donators[donorIndex] = campaign.donators[campaign.donators.length - 1];
-        campaign.donations[donorIndex] = campaign.donations[campaign.donators.length - 1];
-    }
-    // Remove the last element from the array
-    campaign.donators.pop();
-    campaign.donations.pop();
-    
-}
 
-    function getDonators(
-        uint256 _id
-    ) public view returns (address[] memory, uint256[] memory) {
+
+    function processRefund(uint256 _id, address payable _donor) public payable {
+        Campaign storage campaign = campaigns[_id];
+        require(
+            campaign.data.owner == msg.sender,
+            "Only the campaign owner can process refunds."
+        );
+        require(
+            campaign.refundRequests[_donor].processed == false,
+            "Refund not requested by the donor."
+        );
+
+        uint256 donationAmount = campaign.donatedAmounts[_donor];
+        require(donationAmount > 0, "No donation from the donor.");
+
+        campaign.data.amountCollected -= donationAmount;
+        campaign.donatedAmounts[_donor] = 0;
+        campaign.refundRequests[_donor].processed = true;
+
+        (bool sent, ) = _donor.call{value: donationAmount}("");
+        require(sent, "Failed to send refund.");
+
+        // Remove the donor from the donators array
+        uint256 donorIndex;
+        for (uint256 i = 0; i < campaign.donators.length; i++) {
+            if (campaign.donators[i] == _donor) {
+                donorIndex = i;
+                break;
+            }
+        }
+        if (donorIndex < campaign.donators.length - 1) {
+            // Move the last element to the position of the removed donor
+            campaign.donators[donorIndex] = campaign.donators[campaign.donators.length - 1];
+            campaign.donations[donorIndex] = campaign.donations[campaign.donators.length - 1];
+        }
+        // Remove the last element from the array
+        campaign.donators.pop();
+        campaign.donations.pop();
+    }
+
+    function getDonators(uint256 _id) public view returns (address[] memory, uint256[] memory) {
         Campaign storage campaign = campaigns[_id];
         return (campaign.donators, campaign.donations);
     }
@@ -141,5 +148,17 @@ contract FairFund {
         }
 
         return allCampaigns;
+    }
+
+    function getRefundRequests(uint256 _id) public view returns (RefundRequest[] memory) {
+        Campaign storage campaign = campaigns[_id];
+        RefundRequest[] memory requests = new RefundRequest[](campaign.donators.length);
+
+        for (uint256 i = 0; i < campaign.donators.length; i++) {
+            address donator = campaign.donators[i];
+            requests[i] = campaign.refundRequests[donator];
+        }
+
+        return requests;
     }
 }

@@ -11,7 +11,7 @@ import "../index.css";
 const CampaignDetails = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { donate, getDonations, contract, address } = useStateContext();
+  const { donate, getDonations, contract, address, refundRequest } = useStateContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [amount, setAmount] = useState("");
@@ -58,13 +58,23 @@ const CampaignDetails = () => {
     }
   };
 
+  const handleRefundRequest = async (e) => {
+    try {
+      await refundRequest(state.pId);
+      console.log("Refund requested successfully");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="mt-[90px] ">
       {isLoading && <Loader />}
       <div className="flex items-baseline ">
         <Link
           to="/"
-          className={`btn-glow w-[36px] h-[36px] rounded-[10px] flex justify-center items-center bg-[#2c2f32] cursor-pointer mr-2 `}>
+          className={`btn-glow w-[36px] h-[36px] rounded-[10px] flex justify-center items-center bg-[#2c2f32] cursor-pointer mr-2 `}
+        >
           <img src={backIcon} alt="" className="w-[16px] h-[16px] " />
         </Link>
         <span className="font-epilogue font-semibold text-[20px] text-white uppercase ">
@@ -88,7 +98,8 @@ const CampaignDetails = () => {
                   state.amountCollected
                 )}%`,
                 maxWidth: "100%",
-              }}>
+              }}
+            >
               <span className={`${state.amountCollected ? "ml-2" : ""}`}>
                 {Math.round((state.amountCollected / state.target) * 100)}%
               </span>
@@ -113,7 +124,30 @@ const CampaignDetails = () => {
           <CountBox title="Total Backers" value={donators.length} />
         </div>
       </div>
+<<<<<<< Updated upstream
 
+=======
+      <div className="flex justify-left items-center mt-[20px] ">
+        <div>
+          <FacebookShareButton
+            url={`https://fairfund.vercel.app/campaign-details/${state.title}`}
+            quote={`${state.title}`}
+            hashtag="#FAIRFUND"
+          >
+            <FacebookIcon size={32} round />
+          </FacebookShareButton>
+        </div>
+        <div className="ml-[10px]">
+          <TwitterShareButton
+            url={`https://fairfund.vercel.app/campaign-details/${state.title}`}
+            quote={`${state.title}`}
+            hashtag="#FAIRFUND"
+          >
+            <TwitterIcon size={32} round />
+          </TwitterShareButton>
+        </div>
+      </div>
+>>>>>>> Stashed changes
       <div className="mt-[20px] flex lg:flex-row flex-col gap-5">
         <div className="flex-[2] flex flex-col gap-[40px]">
           <div>
@@ -162,7 +196,8 @@ const CampaignDetails = () => {
                 donators.map((item, index) => (
                   <div
                     key={`${item.donator}-${index}`}
-                    className="flex justify-between items-center gap-4">
+                    className="flex justify-between items-center gap-4"
+                  >
                     <p className="font-epilogue font-normal text-[16px] text-[#b2b3bd] leading-[26px] break-ll">
                       {index + 1}. {item.donator}
                     </p>
@@ -230,6 +265,11 @@ const CampaignDetails = () => {
                 />
               )}
             </div>
+            <button className="mt-3 mb-2 px-4 py-2 rounded-full font-epilogue font-semibold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
+            onClick={() => handleRefundRequest(state.id)}
+            >
+              Request Refund
+            </button>
           </div>
         </div>
       </div>

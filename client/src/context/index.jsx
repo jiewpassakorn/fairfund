@@ -13,11 +13,16 @@ const StateContext = createContext();
 
 export const StateContextProvider = ({ children }) => {
   const { contract } = useContract(
-    "0xE81Ddcbf3D89a8E6736026FA03C6617d5a472CcC"
+    "0xa01F6F5Cafb9fa66aCD07dd1D59055AfbB8aF677"
   );
   const { mutateAsync: createCampaign } = useContractWrite(
     contract,
     "createCampaign"
+  );
+
+  const { mutateAsync: requestRefund } = useContractWrite(
+    contract,
+    "requestRefund"
   );
 
   const address = useAddress();
@@ -34,6 +39,24 @@ export const StateContextProvider = ({ children }) => {
           new Date(form.deadline).getTime(),
           form.image,
         ],
+      });
+      console.log("Contract call successful");
+    } catch (error) {
+      if (error.message.includes("user rejected transaction")) {
+        alert("Transaction rejected by the user");
+      } else {
+        console.error(error);
+        alert(
+          "An error occurred during the transaction. Please try again later."
+        );
+      }
+    }
+  };
+
+  const refundRequest = async (pId) => {
+    try {
+      const data = await requestRefund({
+        args: [pId],
       });
       console.log("Contract call successful");
     } catch (error) {
@@ -114,6 +137,7 @@ export const StateContextProvider = ({ children }) => {
         getUserCampaigns,
         donate,
         getDonations,
+        refundRequest
       }}>
       {children}
     </StateContext.Provider>
