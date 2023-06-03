@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 import FundCard from "./FundCard";
@@ -13,6 +13,7 @@ import {
 } from "@material-tailwind/react";
 
 const DisplayCampaigns = ({ title, isLoading, campaigns, data }) => {
+  const [selectedTab, setSelectedTab] = useState("available");
   const navigate = useNavigate();
 
   const handleNavigate = (campaign) => {
@@ -41,7 +42,7 @@ const DisplayCampaigns = ({ title, isLoading, campaigns, data }) => {
           />
         )}
       </div>
-      <Tabs value="available">
+      <Tabs value={selectedTab}>
         <TabsHeader
           className={
             data.length === 2
@@ -49,13 +50,22 @@ const DisplayCampaigns = ({ title, isLoading, campaigns, data }) => {
               : "max-w-[30rem] rounded-full bg-[#3a3a43]"
           }
           indicatorProps={{
-            className: "rounded-full bg-[#3a3a43]",
+            className: `rounded-full ${
+              selectedTab === "available"
+                ? "bg-green-500"
+                : selectedTab === "unavailable"
+                ? "bg-red-500"
+                : selectedTab === "history"
+                ? "bg-blue-500"
+                : "bg-[#3a3a43]"
+            }`,
           }}>
           {data.map(({ label, value }) => (
             <Tab
               key={value}
               value={value}
-              className="font-epilogue text-white max-w-[10rem]">
+              className="font-epilogue text-white max-w-[10rem]"
+              onClick={() => setSelectedTab(value)}>
               {label}
             </Tab>
           ))}
@@ -76,14 +86,19 @@ const DisplayCampaigns = ({ title, isLoading, campaigns, data }) => {
               key={value}
               value={value}
               className="flex flex-wrap gap-[26px] ">
-              {/* {console.log(value, filteredcampaigns.length)} */}
-              {filteredcampaigns.map((campaign) => (
-                <FundCard
-                  key={campaign.pId}
-                  {...campaign}
-                  handleClick={() => handleNavigate(campaign)}
-                />
-              ))}
+              {selectedTab !== "history" ? (
+                filteredcampaigns.map((campaign) => (
+                  <FundCard
+                    key={campaign.pId}
+                    {...campaign}
+                    handleClick={() => handleNavigate(campaign)}
+                  />
+                ))
+              ) : (
+                <p>
+                  Some text to display when the selected tab is "history"...
+                </p>
+              )}
             </TabPanel>
           ))}
         </TabsBody>
