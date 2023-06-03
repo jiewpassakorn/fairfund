@@ -86,14 +86,19 @@ const DisplayCampaigns = ({ title, isLoading, campaigns, data }) => {
               key={value}
               value={value}
               className="flex flex-wrap gap-[26px] ">
-              {/* {console.log(value, filteredcampaigns.length)} */}
-              {filteredcampaigns.map((campaign) => (
-                <FundCard
-                  key={campaign.pId}
-                  {...campaign}
-                  handleClick={() => handleNavigate(campaign)}
-                />
-              ))}
+              {selectedTab !== "history" ? (
+                filteredcampaigns.map((campaign) => (
+                  <FundCard
+                    key={campaign.pId}
+                    {...campaign}
+                    handleClick={() => handleNavigate(campaign)}
+                  />
+                ))
+              ) : (
+                <p>
+                  Some text to display when the selected tab is "history"...
+                </p>
+              )}
             </TabPanel>
           ))}
         </TabsBody>
