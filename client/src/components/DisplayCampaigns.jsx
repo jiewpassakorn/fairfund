@@ -49,7 +49,13 @@ const DisplayCampaigns = ({ title, isLoading, campaigns, data }) => {
             </Tab>
           ))}
         </TabsHeader>
-        <TabsBody className="mt-2">
+        <TabsBody
+          className="mt-2 "
+          animate={{
+            initial: { y: 250 },
+            mount: { y: 0 },
+            unmount: { y: 250 },
+          }}>
           {!isLoading && campaigns.length === 0 && (
             <p className="font-epilogue font-semibold text-[14px] leading-[30px] text-[#818183]">
               You have not created any campaigns yet
@@ -59,7 +65,7 @@ const DisplayCampaigns = ({ title, isLoading, campaigns, data }) => {
             <TabPanel
               key={value}
               value={value}
-              className="flex flex-wrap gap-[26px]">
+              className="flex flex-wrap gap-[26px] ">
               {/* {console.log(value, filteredcampaigns.length)} */}
               {filteredcampaigns.map((campaign) => (
                 <FundCard
