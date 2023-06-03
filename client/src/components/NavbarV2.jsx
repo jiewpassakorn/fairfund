@@ -37,7 +37,7 @@ const NavbarV2 = () => {
   const disconnect = useDisconnect();
 
   return (
-    <nav className=" bg-gray-900 fixed w-full z-20 top-0 left-0 border-b border-gray-600 ">
+    <nav className=" bg-gray-900/95 fixed w-full z-20 top-0 left-0 border-b border-gray-600 ">
       <div className="max-w-screen-2xl flex flex-wrap items-center justify-between mx-auto p-4">
         <Link to="/" className="flex items-center">
           <img src={fairfund} className="h-8 mr-3" alt="" />
