@@ -124,30 +124,6 @@ const CampaignDetails = () => {
           <CountBox title="Total Backers" value={donators.length} />
         </div>
       </div>
-<<<<<<< Updated upstream
-
-=======
-      <div className="flex justify-left items-center mt-[20px] ">
-        <div>
-          <FacebookShareButton
-            url={`https://fairfund.vercel.app/campaign-details/${state.title}`}
-            quote={`${state.title}`}
-            hashtag="#FAIRFUND"
-          >
-            <FacebookIcon size={32} round />
-          </FacebookShareButton>
-        </div>
-        <div className="ml-[10px]">
-          <TwitterShareButton
-            url={`https://fairfund.vercel.app/campaign-details/${state.title}`}
-            quote={`${state.title}`}
-            hashtag="#FAIRFUND"
-          >
-            <TwitterIcon size={32} round />
-          </TwitterShareButton>
-        </div>
-      </div>
->>>>>>> Stashed changes
       <div className="mt-[20px] flex lg:flex-row flex-col gap-5">
         <div className="flex-[2] flex flex-col gap-[40px]">
           <div>
