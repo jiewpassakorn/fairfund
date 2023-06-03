@@ -104,6 +104,24 @@ contract FairFund {
 
     (bool sent, ) = _donor.call{value: donationAmount}("");
     require(sent, "Failed to send refund.");
+    
+    // Remove the donor from the donators array
+    uint256 donorIndex;
+    for (uint256 i = 0; i < campaign.donators.length; i++) {
+        if (campaign.donators[i] == _donor) {
+            donorIndex = i;
+            break;
+        }
+    }
+    if (donorIndex < campaign.donators.length - 1) {
+        // Move the last element to the position of the removed donor
+        campaign.donators[donorIndex] = campaign.donators[campaign.donators.length - 1];
+        campaign.donations[donorIndex] = campaign.donations[campaign.donators.length - 1];
+    }
+    // Remove the last element from the array
+    campaign.donators.pop();
+    campaign.donations.pop();
+    
 }
 
     function getDonators(
