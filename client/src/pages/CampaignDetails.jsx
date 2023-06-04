@@ -11,7 +11,8 @@ import "../index.css";
 const CampaignDetails = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { donate, getDonations, contract, address, refundRequest } = useStateContext();
+  const { donate, getDonations, contract, address, refundRequest } =
+    useStateContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [amount, setAmount] = useState("");
@@ -59,11 +60,22 @@ const CampaignDetails = () => {
   };
 
   const handleRefundRequest = async (e) => {
+    setIsLoading(true);
     try {
       await refundRequest(state.pId);
-      console.log("Refund requested successfully");
+      console.log(`Refund requested successfully id = ${state.pId}`);
+      alert("Refund requested successfully");
     } catch (error) {
-      console.error(error);
+      if (error.message.includes("user rejected transaction")) {
+        alert("Transaction rejected by the user");
+      } else {
+        console.error(error);
+        alert(
+          "An error occurred during the transaction. Please try again later."
+        );
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -73,8 +85,7 @@ const CampaignDetails = () => {
       <div className="flex items-baseline ">
         <Link
           to="/"
-          className={`btn-glow w-[36px] h-[36px] rounded-[10px] flex justify-center items-center bg-[#2c2f32] cursor-pointer mr-2 `}
-        >
+          className={`btn-glow w-[36px] h-[36px] rounded-[10px] flex justify-center items-center bg-[#2c2f32] cursor-pointer mr-2 `}>
           <img src={backIcon} alt="" className="w-[16px] h-[16px] " />
         </Link>
         <span className="font-epilogue font-semibold text-[20px] text-white uppercase ">
@@ -98,8 +109,7 @@ const CampaignDetails = () => {
                   state.amountCollected
                 )}%`,
                 maxWidth: "100%",
-              }}
-            >
+              }}>
               <span className={`${state.amountCollected ? "ml-2" : ""}`}>
                 {Math.round((state.amountCollected / state.target) * 100)}%
               </span>
@@ -172,8 +182,7 @@ const CampaignDetails = () => {
                 donators.map((item, index) => (
                   <div
                     key={`${item.donator}-${index}`}
-                    className="flex justify-between items-center gap-4"
-                  >
+                    className="flex justify-between items-center gap-4">
                     <p className="font-epilogue font-normal text-[16px] text-[#b2b3bd] leading-[26px] break-ll">
                       {index + 1}. {item.donator}
                     </p>
@@ -241,11 +250,23 @@ const CampaignDetails = () => {
                 />
               )}
             </div>
-            <button className="mt-3 mb-2 px-4 py-2 rounded-full font-epilogue font-semibold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
-            onClick={() => handleRefundRequest(state.id)}
-            >
+            <CustomButton
+              btnType="button"
+              title="Request Refund"
+              styles="w-full bg-[#8c6dfd] mt-3"
+              handleClick={handleRefundRequest}
+            />
+            {/* <CustomButton
+              btnType="button"
+              title="Request Refund"
+              styles="w-full bg-[#8c6dfd]"
+              handleClick={handleRefundRequest(state.id)}
+            /> */}
+            {/* <button
+              className="mt-3 mb-2 px-4 py-2 rounded-full font-epilogue font-semibold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
+              onClick={() => handleRefundRequest(state.id)}>
               Request Refund
-            </button>
+            </button> */}
           </div>
         </div>
       </div>

@@ -13,7 +13,7 @@ const StateContext = createContext();
 
 export const StateContextProvider = ({ children }) => {
   const { contract } = useContract(
-    "0xa01F6F5Cafb9fa66aCD07dd1D59055AfbB8aF677"
+    "0xC8f1c7D974D4b6C92619e009b6444E0dEc700949"
   );
   const { mutateAsync: createCampaign } = useContractWrite(
     contract,
@@ -126,6 +126,27 @@ export const StateContextProvider = ({ children }) => {
     return parsedDonations;
   };
 
+  const getDonorCampaigns = async (donorAddress) => {
+    const donorCampaigns = await contract.call("getDonorCampaigns", [
+      donorAddress,
+    ]);
+
+    const parsedCampaigns = donorCampaigns.map((campaign) => ({
+      owner: campaign.owner,
+      title: campaign.title,
+      description: campaign.description,
+      target: ethers.utils.formatEther(campaign.target.toString()),
+      deadline: campaign.deadline.toNumber(),
+      amountCollected: ethers.utils.formatEther(
+        campaign.amountCollected.toString()
+      ),
+      image: campaign.image,
+      pId: campaign.pId,
+    }));
+
+    return parsedCampaigns;
+  };
+
   return (
     <StateContext.Provider
       value={{
@@ -137,7 +158,8 @@ export const StateContextProvider = ({ children }) => {
         getUserCampaigns,
         donate,
         getDonations,
-        refundRequest
+        refundRequest,
+        getDonorCampaigns,
       }}>
       {children}
     </StateContext.Provider>

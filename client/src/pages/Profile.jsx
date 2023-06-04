@@ -8,8 +8,10 @@ import { daysLeft } from "../utils";
 const Profile = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [campaigns, setCampaigns] = useState([]);
+  const [donorCampaigns, setDonorCampaigns] = useState([]);
 
-  const { address, contract, getUserCampaigns } = useStateContext();
+  const { address, contract, getUserCampaigns, getDonorCampaigns } =
+    useStateContext();
 
   const fetchCampaigns = async () => {
     setIsLoading(true);
@@ -46,8 +48,24 @@ const Profile = () => {
     },
   ];
 
+  const fetchDonorCampaigns = async () => {
+    try {
+      setIsLoading(true);
+      const result = await getDonorCampaigns(address);
+      setDonorCampaigns(result);
+      setIsLoading(false);
+
+      console.log(result);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
-    if (contract) fetchCampaigns();
+    if (contract) {
+      fetchCampaigns();
+      fetchDonorCampaigns();
+    }
   }, [address, contract]);
 
   return (
@@ -60,6 +78,7 @@ const Profile = () => {
         isLoading={isLoading}
         campaigns={campaigns}
         data={data}
+        donorCampaigns={donorCampaigns}
       />
     </>
   );

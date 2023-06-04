@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 
 import FundCard from "./FundCard";
 import { loader } from "../assets";
+import { CountBox, CustomButton, Loader } from "../components";
 import { fairfund, backIcon, dashboard } from "../assets";
 import {
   Tabs,
@@ -12,13 +13,20 @@ import {
   TabPanel,
 } from "@material-tailwind/react";
 
-const DisplayCampaigns = ({ title, isLoading, campaigns, data }) => {
+const DisplayCampaigns = ({
+  title,
+  isLoading,
+  campaigns,
+  data,
+  donorCampaigns,
+}) => {
   const [selectedTab, setSelectedTab] = useState("available");
   const navigate = useNavigate();
 
   const handleNavigate = (campaign) => {
     navigate(`/campaign-details/${campaign.title}`, { state: campaign });
   };
+  // console.log("Test ", donorCampaigns[0].title);
 
   return (
     <div className="mt-[90px]">
@@ -85,20 +93,41 @@ const DisplayCampaigns = ({ title, isLoading, campaigns, data }) => {
             <TabPanel
               key={value}
               value={value}
-              className="flex flex-wrap gap-[26px] ">
-              {selectedTab !== "history" ? (
-                filteredcampaigns.map((campaign) => (
-                  <FundCard
-                    key={campaign.pId}
-                    {...campaign}
-                    handleClick={() => handleNavigate(campaign)}
-                  />
-                ))
-              ) : (
-                <p>
-                  Some text to display when the selected tab is "history"...
-                </p>
-              )}
+              className={
+                selectedTab !== "history"
+                  ? "flex flex-wrap gap-[20px]"
+                  : "mt-[20px] flex flex-col gap-4"
+              }>
+              {selectedTab !== "history"
+                ? filteredcampaigns.map((campaign) => (
+                    <FundCard
+                      key={campaign.pId}
+                      {...campaign}
+                      handleClick={() => handleNavigate(campaign)}
+                    />
+                  ))
+                : selectedTab === "history" &&
+                  donorCampaigns.map((campaign, index) => (
+                    <div
+                      key={`${campaign.title}-${index}`}
+                      className="flex justify-normal items-center gap-4">
+                      <div className="flex items-center gap-4">
+                        <p className="font-epilogue font-normal text-[16px] text-[#b2b3bd] leading-[26px] break-ll w-[10rem]">
+                          {index + 1}. {campaign.title}
+                        </p>
+                      </div>
+                      <div>
+                        {/* <p className="font-epilogue font-normal text-[16px] text-[#808191] leading-[26px] break-ll">
+                          Donated amount : {campaign.amountCollected}
+                        </p> */}
+                        <CustomButton
+                          btnType="button"
+                          title={`Donated ${campaign.amountCollected}`}
+                          styles="w-full bg-[#8c6dfd]"
+                        />
+                      </div>
+                    </div>
+                  ))}
             </TabPanel>
           ))}
         </TabsBody>
