@@ -19,7 +19,7 @@ contract FairFund {
         address[] donators;
         uint256[] donations;
     }
-    
+
     struct RefundRequest {
         address requester;
         uint256 amount;
@@ -93,7 +93,6 @@ contract FairFund {
         }
     }
 
-
     function processRefund(uint256 _id, address payable _donor) public payable {
         Campaign storage campaign = campaigns[_id];
         require(
@@ -160,5 +159,25 @@ contract FairFund {
         }
 
         return requests;
+    }
+
+    function getDonorCampaigns(address _donor) public view returns (CampaignData[] memory) {
+        uint256 count = 0;
+        for (uint256 i = 0; i < numberOfCampaigns; i++) {
+            if (campaigns[i].donatedAmounts[_donor] > 0) {
+                count++;
+            }
+        }
+
+        CampaignData[] memory donorCampaigns = new CampaignData[](count);
+        uint256 currentIndex = 0;
+        for (uint256 i = 0; i < numberOfCampaigns; i++) {
+            if (campaigns[i].donatedAmounts[_donor] > 0) {
+                donorCampaigns[currentIndex] = campaigns[i].data;
+                currentIndex++;
+            }
+        }
+
+        return donorCampaigns;
     }
 }
