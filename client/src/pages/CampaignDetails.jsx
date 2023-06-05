@@ -97,11 +97,24 @@ const CampaignDetails = () => {
   };
 
   const handleApproval = async (id, donor, amount) => {
-    // console.log("id", id);
-    // console.log("donor", donor);
+    console.log("id", id);
+    console.log("donor", donor);
+    console.log("amount", amount);
+    setIsLoading(true);
     try {
       await processApprovalRefund(id, donor, amount);
-    } catch (error) {}
+    } catch (error) {
+      if (error.message.includes("user rejected transaction")) {
+        alert("Transaction rejected by the user");
+      } else {
+        console.error(error);
+        alert(
+          "An error occurred during the transaction. Please try again later."
+        );
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

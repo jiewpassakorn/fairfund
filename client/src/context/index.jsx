@@ -12,7 +12,7 @@ const StateContext = createContext();
 
 export const StateContextProvider = ({ children }) => {
   const { contract } = useContract(
-    "0x38f2872f323ba5D5d706535c98F592E93851564c"
+    "0x4539ed76408FAe5dDaC450b8124284CEEF504326"
   );
   const { mutateAsync: createCampaign } = useContractWrite(
     contract,
@@ -151,6 +151,14 @@ export const StateContextProvider = ({ children }) => {
     return parsedCampaigns;
   };
 
+  const provessRefund = async (pId, amount) => {
+    const data = await contract.call("getRefundRequests", [pId], {
+      value: ethers.utils.parseEther(amount),
+    });
+
+    return data;
+  };
+
   const getRefundRequests = async (pId) => {
     const data = await contract.call("getRefundRequests", [pId]);
     console.log("refund list:", data);
@@ -172,8 +180,7 @@ export const StateContextProvider = ({ children }) => {
   const processApprovalRefund = async (pId, donor, amount) => {
     console.log(pId, donor, amount);
     try {
-      const data = await processRefund({
-        args: [pId, donor],
+      const data = await contract.call("processRefund", [pId, donor], {
         value: ethers.utils.parseEther(amount),
       });
       console.info("contract call success", data);
