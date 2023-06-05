@@ -12,7 +12,7 @@ const StateContext = createContext();
 
 export const StateContextProvider = ({ children }) => {
   const { contract } = useContract(
-    "0x4539ed76408FAe5dDaC450b8124284CEEF504326"
+    "0x38f2872f323ba5D5d706535c98F592E93851564c"
   );
   const { mutateAsync: createCampaign } = useContractWrite(
     contract,
@@ -24,7 +24,7 @@ export const StateContextProvider = ({ children }) => {
     "requestRefund"
   );
 
-  const { mutateAsync: processRefund, isLoading } = useContractWrite(
+  const { mutateAsync: processRefund } = useContractWrite(
     contract,
     "processRefund"
   );
