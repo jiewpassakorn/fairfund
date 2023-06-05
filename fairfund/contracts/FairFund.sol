@@ -132,6 +132,29 @@ contract FairFund {
         campaign.donations.pop();
     }
 
+    function deleteCampaign(uint256 _id) public {
+        Campaign storage campaign = campaigns[_id];
+        require(
+            campaign.data.owner == msg.sender,
+            "Only the campaign owner can delete the campaign."
+        );
+        
+        //Refund all donations before deleting the campaign
+        address[] storage donators = campaign.donators;
+        for (uint256 i = 0; i < donators.length; i++) {
+            address donator = donators[i];
+            uint256 donationAmount = campaign.donatedAmounts[donator];
+            if(donationAmount > 0) {
+                campaign.donatedAmounts[donator] = 0;
+                (bool sent, ) = donator.call{value: donationAmount}("");
+                require(sent, "Failed to send refund.");
+            }
+            campaign.refundRequests[donator].processed = true;
+        }
+
+        delete campaigns[_id];
+    }
+
     function getDonators(uint256 _id) public view returns (address[] memory, uint256[] memory) {
         Campaign storage campaign = campaigns[_id];
         return (campaign.donators, campaign.donations);
