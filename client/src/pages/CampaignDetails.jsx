@@ -18,7 +18,7 @@ const CampaignDetails = () => {
     address,
     refundRequest,
     getRefundRequests,
-    processRefund,
+    processApprovalRefund,
   } = useStateContext();
 
   const [isLoading, setIsLoading] = useState(false);

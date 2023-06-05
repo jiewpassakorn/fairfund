@@ -24,6 +24,11 @@ export const StateContextProvider = ({ children }) => {
     "requestRefund"
   );
 
+  const { mutateAsync: processRefund, isLoading } = useContractWrite(
+    contract,
+    "processRefund"
+  );
+
   const address = useAddress();
   const connect = useMetamask();
 
@@ -164,9 +169,14 @@ export const StateContextProvider = ({ children }) => {
     return parsedRequests;
   };
 
-  const processRefund = async (pId, donor) => {
+  const processApprovalRefund = async (pId, donor) => {
     console.log(pId, donor);
-    const data = await contract.call("processRefund", [pId, donor]);
+    try {
+      const data = await processRefund({ args: [pId, donor] });
+      console.info("contract call success", data);
+    } catch (err) {
+      console.error("contract call failure", err);
+    }
 
     return data;
   };
@@ -185,7 +195,7 @@ export const StateContextProvider = ({ children }) => {
         refundRequest,
         getDonorCampaigns,
         getRefundRequests,
-        processRefund,
+        processApprovalRefund,
       }}>
       {children}
     </StateContext.Provider>
