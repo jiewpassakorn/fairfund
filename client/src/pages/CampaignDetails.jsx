@@ -25,6 +25,7 @@ const CampaignDetails = () => {
   const [amount, setAmount] = useState("");
   const [donators, setDonators] = useState([]);
   const [refundLists, setRefundLists] = useState([]);
+  const [refundAmounts, setRefundAmounts] = useState("");
 
   const remainingDays = daysLeft(state.deadline);
 
@@ -95,11 +96,11 @@ const CampaignDetails = () => {
     }
   };
 
-  const handleApproval = async (id, donor) => {
+  const handleApproval = async (id, donor, amount) => {
     // console.log("id", id);
     // console.log("donor", donor);
     try {
-      await processApprovalRefund(id, donor);
+      await processApprovalRefund(id, donor, amount);
     } catch (error) {}
   };
 
@@ -252,7 +253,11 @@ const CampaignDetails = () => {
                           type="button"
                           className="font-epilogue font-normal text-[10px] text-white bg-green-600 p-1 rounded-lg"
                           onClick={() =>
-                            handleApproval(state.pId, item.requester)
+                            handleApproval(
+                              state.pId,
+                              item.requester,
+                              item.amount
+                            )
                           }>
                           Approved
                         </button>

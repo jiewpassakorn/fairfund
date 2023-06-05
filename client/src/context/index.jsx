@@ -169,10 +169,13 @@ export const StateContextProvider = ({ children }) => {
     return parsedRequests;
   };
 
-  const processApprovalRefund = async (pId, donor) => {
-    console.log(pId, donor);
+  const processApprovalRefund = async (pId, donor, amount) => {
+    console.log(pId, donor, amount);
     try {
-      const data = await processRefund({ args: [pId, donor] });
+      const data = await processRefund({
+        args: [pId, donor],
+        value: ethers.utils.parseEther(amount),
+      });
       console.info("contract call success", data);
     } catch (err) {
       console.error("contract call failure", err);
