@@ -9,9 +9,15 @@ const Profile = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [campaigns, setCampaigns] = useState([]);
   const [donorCampaigns, setDonorCampaigns] = useState([]);
+  const [donatedHistory, setDonatedHistory] = useState([]);
 
-  const { address, contract, getUserCampaigns, getDonorCampaigns } =
-    useStateContext();
+  const {
+    address,
+    contract,
+    getUserCampaigns,
+    getDonorCampaigns,
+    getDonatedHistory,
+  } = useStateContext();
 
   const fetchCampaigns = async () => {
     setIsLoading(true);
@@ -53,9 +59,19 @@ const Profile = () => {
       setIsLoading(true);
       const result = await getDonorCampaigns(address);
       setDonorCampaigns(result);
+      // console.log("donorCampaigns ", donorCampaigns);
       setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-      console.log(result);
+  const fetchDonatedHistory = async () => {
+    try {
+      setIsLoading(true);
+      const result = await getDonatedHistory();
+      setDonatedHistory(result);
+      setIsLoading(false);
     } catch (error) {
       console.error(error);
     }
@@ -65,6 +81,7 @@ const Profile = () => {
     if (contract) {
       fetchCampaigns();
       fetchDonorCampaigns();
+      fetchDonatedHistory();
     }
   }, [address, contract]);
 
@@ -79,6 +96,7 @@ const Profile = () => {
         campaigns={campaigns}
         data={data}
         donorCampaigns={donorCampaigns}
+        donatedHistory={donatedHistory}
       />
     </>
   );

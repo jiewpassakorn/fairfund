@@ -170,6 +170,24 @@ export const StateContextProvider = ({ children }) => {
 
     return data;
   };
+  const getDonatedHistory = async () => {
+    const result = [];
+    try {
+      const campaign = await getCampaigns();
+      for (let i = 0; i < campaign.length; i++) {
+        const data = await contract.call("getDonators", [i]);
+        for (let j = 0; j < data[0].length; j++) {
+          if (data[0][j] === address)
+            result.push({
+              pId: i,
+              donater: data[0][j],
+              amount: ethers.utils.formatEther(data[1][j].toString()),
+            });
+        }
+      }
+    } catch (error) {}
+    return result;
+  };
 
   return (
     <StateContext.Provider
@@ -186,6 +204,7 @@ export const StateContextProvider = ({ children }) => {
         getDonorCampaigns,
         getRefundRequests,
         processRefund,
+        getDonatedHistory,
       }}>
       {children}
     </StateContext.Provider>

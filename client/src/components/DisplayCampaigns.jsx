@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-
+import { CountBox, CustomButton, Loader } from "../components";
 import FundCard from "./FundCard";
 import { loader } from "../assets";
-import { CountBox, CustomButton, Loader } from "../components";
-import { fairfund, backIcon, dashboard } from "../assets";
+import { dashboard } from "../assets";
+import { daysLeft } from "../utils";
 import {
   Tabs,
   TabsHeader,
@@ -19,6 +19,7 @@ const DisplayCampaigns = ({
   campaigns,
   data,
   donorCampaigns,
+  donatedHistory,
 }) => {
   const [selectedTab, setSelectedTab] = useState("available");
   const navigate = useNavigate();
@@ -26,7 +27,19 @@ const DisplayCampaigns = ({
   const handleNavigate = (campaign) => {
     navigate(`/campaign-details/${campaign.title}`, { state: campaign });
   };
-  // console.log("Test ", donorCampaigns[0].title);
+
+  const sumAmount = new Map();
+  if (Array.isArray(donatedHistory)) {
+    donatedHistory.forEach((item) => {
+      const { pId, amount } = item;
+      if (sumAmount.has(pId)) {
+        sumAmount.set(pId, parseFloat(sumAmount.get(pId)) + parseFloat(amount));
+      } else {
+        sumAmount.set(pId, parseFloat(amount));
+      }
+    });
+  }
+  console.log(donatedHistory);
 
   return (
     <div className="mt-[90px]">
@@ -95,6 +108,7 @@ const DisplayCampaigns = ({
                 You never donate any campaigns
               </p>
             ))}
+
           {data.map(({ value, filteredcampaigns }) => (
             <TabPanel
               key={value}
@@ -112,28 +126,70 @@ const DisplayCampaigns = ({
                       handleClick={() => handleNavigate(campaign)}
                     />
                   ))
-                : selectedTab === "history" &&
-                  donorCampaigns.map((campaign, index) => (
-                    <div
-                      key={`${campaign.title}-${index}`}
-                      className="flex justify-normal items-center gap-4">
-                      <div className="flex items-center gap-4">
-                        <p className="font-epilogue font-normal text-[16px] text-[#b2b3bd] leading-[26px] break-ll w-[10rem]">
-                          {index + 1}. {campaign.title}
-                        </p>
-                      </div>
-                      <div>
-                        {/* <p className="font-epilogue font-normal text-[16px] text-[#808191] leading-[26px] break-ll">
-                          Donated amount : {campaign.amountCollected}
-                        </p> */}
-                        <CustomButton
-                          btnType="button"
-                          title={`Donated ${campaign.amountCollected}`}
-                          styles="w-full bg-[#8c6dfd]"
-                        />
-                      </div>
+                : selectedTab === "history" && (
+                    <div className="font-epilogue font-semibold text-[16px] leading-[30px] text-white flex flex-col p-4">
+                      <h1>Your Donated</h1> {/* Add the heading here */}
+                      {donorCampaigns.map((campaign, index) => (
+                        <div
+                          key={`${index}`}
+                          className="flex justify-between items-left gap-4 bg-gray-600 rounded-lg bg-opacity-30 mt-2 flex-col p-4">
+                          <div className="flex justify-between">
+                            <div className="flex flex-row gap-4 items-center">
+                              <h1 className="font-epilogue font-normal text-[16px] text-white leading-[26px] break-ll ">
+                                {index + 1}. Campaign Title :
+                              </h1>
+                              <h1 className="font-epilogue font-normal text-[16px] text-[#b2b3bd] leading-[26px] break-ll w-[10rem]">
+                                {campaign.title}
+                              </h1>
+                            </div>
+
+                            <div>
+                              <span
+                                className={`inline-flex items-center ${
+                                  daysLeft(campaign.deadline) > 0
+                                    ? "text-green-100 bg-green-800"
+                                    : "text-red-100 bg-red-800"
+                                }  text-xs font-epilogue px-2.5 py-0.5 rounded-full`}>
+                                <span
+                                  className={`w-2 h-2 mr-1 ${
+                                    daysLeft(campaign.deadline) > 0
+                                      ? "bg-green-500"
+                                      : "bg-red-500"
+                                  }  rounded-full`}></span>
+                                {daysLeft(campaign.deadline) > 0
+                                  ? "Available"
+                                  : "Unavailable"}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="flex justify-between">
+                            <div className="flex flex-row gap-4 items-center ">
+                              <p className="font-epilogue font-normal text-[16px] text-[#808191] leading-[26px] break-ll">
+                                Owner : {campaign.owner}
+                              </p>
+                            </div>
+
+                            <div>
+                              <p className="font-epilogue font-normal text-[16px] text-[#808191] leading-[26px] break-ll">
+                                Your Total Donated :{" "}
+                                {Array.from(sumAmount.entries())[index]
+                                  ? Array.from(sumAmount.entries())[index][1]
+                                  : ""}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex justify-end">
+                            <button
+                              className={`bg-gray-600 font-epilogue font-normal text-xs  text-white p-2 rounded-full `}
+                              // onClick={handleClick}
+                            >
+                              Request Refund
+                            </button>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  )}
             </TabPanel>
           ))}
         </TabsBody>
