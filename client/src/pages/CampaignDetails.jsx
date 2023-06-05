@@ -99,7 +99,7 @@ const CampaignDetails = () => {
     // console.log("id", id);
     // console.log("donor", donor);
     try {
-      await processApprovalRefund(id, donor);
+      await processApprovalRefund({ id, donor });
     } catch (error) {}
   };
 
