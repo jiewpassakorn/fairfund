@@ -15,9 +15,9 @@ contract FairFund {
     struct Campaign {
         CampaignData data;
         mapping(address => uint256) donatedAmounts; // Track individual donation amounts
-        mapping(address => RefundRequest) refundRequests; // Track refund requests
         address[] donators;
-        uint256[] donations;
+        uint256[] donations; // Track donation amounts
+        mapping(address => RefundRequest) refundRequests; // Track refund requests
     }
 
     struct RefundRequest {
@@ -27,7 +27,6 @@ contract FairFund {
     }
 
     mapping(uint256 => Campaign) public campaigns;
-
     uint256 public numberOfCampaigns = 0;
 
     function createCampaign(
@@ -124,8 +123,12 @@ contract FairFund {
         }
         if (donorIndex < campaign.donators.length - 1) {
             // Move the last element to the position of the removed donor
-            campaign.donators[donorIndex] = campaign.donators[campaign.donators.length - 1];
-            campaign.donations[donorIndex] = campaign.donations[campaign.donators.length - 1];
+            campaign.donators[donorIndex] = campaign.donators[
+                campaign.donators.length - 1
+            ];
+            campaign.donations[donorIndex] = campaign.donations[
+                campaign.donators.length - 1
+            ];
         }
         // Remove the last element from the array
         campaign.donators.pop();
@@ -133,29 +136,57 @@ contract FairFund {
     }
 
     function deleteCampaign(uint256 _id) public {
-        Campaign storage campaign = campaigns[_id];
-        require(
-            campaign.data.owner == msg.sender,
-            "Only the campaign owner can delete the campaign."
-        );
-        
-        //Refund all donations before deleting the campaign
-        address[] storage donators = campaign.donators;
-        for (uint256 i = 0; i < donators.length; i++) {
-            address donator = donators[i];
-            uint256 donationAmount = campaign.donatedAmounts[donator];
-            if(donationAmount > 0) {
-                campaign.donatedAmounts[donator] = 0;
-                (bool sent, ) = donator.call{value: donationAmount}("");
-                require(sent, "Failed to send refund.");
-            }
-            campaign.refundRequests[donator].processed = true;
-        }
+    require(_id < numberOfCampaigns, "Invalid campaign ID.");
 
-        delete campaigns[_id];
+    Campaign storage campaignToDelete = campaigns[_id];
+    require(campaignToDelete.data.owner == msg.sender, "Only the campaign owner can delete the campaign.");
+
+    // Refund donations and process refund requests
+    address[] storage donators = campaignToDelete.donators;
+    for (uint256 i = 0; i < donators.length; i++) {
+        address donator = donators[i];
+        uint256 donationAmount = campaignToDelete.donatedAmounts[donator];
+        if (donationAmount > 0) {
+            campaignToDelete.donatedAmounts[donator] = 0;
+            (bool sent, ) = payable(donator).call{value: donationAmount}("");
+            require(sent, "Failed to refund donation.");
+        }
+        campaignToDelete.refundRequests[donator].processed = true;
     }
 
-    function getDonators(uint256 _id) public view returns (address[] memory, uint256[] memory) {
+    // Swap the campaign to delete with the last campaign
+    uint256 lastCampaignId = numberOfCampaigns - 1;
+    Campaign storage lastCampaign = campaigns[lastCampaignId];
+
+    // Copy data from the last campaign to the campaign to delete
+    campaignToDelete.data.owner = lastCampaign.data.owner;
+    campaignToDelete.data.title = lastCampaign.data.title;
+    campaignToDelete.data.description = lastCampaign.data.description;
+    campaignToDelete.data.target = lastCampaign.data.target;
+    campaignToDelete.data.deadline = lastCampaign.data.deadline;
+    campaignToDelete.data.amountCollected = lastCampaign.data.amountCollected;
+    campaignToDelete.data.image = lastCampaign.data.image;
+
+    // Update the mappings of the moved campaign's donators
+    for (uint256 i = 0; i < campaignToDelete.donators.length; i++) {
+        address donator = campaignToDelete.donators[i];
+        campaignToDelete.donatedAmounts[donator] = lastCampaign.donatedAmounts[donator];
+        campaignToDelete.refundRequests[donator] = lastCampaign.refundRequests[donator];
+    }
+
+    // Delete the last campaign from the mapping
+    delete campaigns[lastCampaignId];
+
+    // Decrement the numberOfCampaigns count
+    numberOfCampaigns--;
+}
+
+
+
+
+    function getDonators(
+        uint256 _id
+    ) public view returns (address[] memory, uint256[] memory) {
         Campaign storage campaign = campaigns[_id];
         return (campaign.donators, campaign.donations);
     }
@@ -172,9 +203,13 @@ contract FairFund {
         return allCampaigns;
     }
 
-    function getRefundRequests(uint256 _id) public view returns (RefundRequest[] memory) {
+    function getRefundRequests(
+        uint256 _id
+    ) public view returns (RefundRequest[] memory) {
         Campaign storage campaign = campaigns[_id];
-        RefundRequest[] memory requests = new RefundRequest[](campaign.donators.length);
+        RefundRequest[] memory requests = new RefundRequest[](
+            campaign.donators.length
+        );
 
         for (uint256 i = 0; i < campaign.donators.length; i++) {
             address donator = campaign.donators[i];
@@ -184,7 +219,9 @@ contract FairFund {
         return requests;
     }
 
-    function getDonorCampaigns(address _donor) public view returns (CampaignData[] memory) {
+    function getDonorCampaigns(
+        address _donor
+    ) public view returns (CampaignData[] memory) {
         uint256 count = 0;
         for (uint256 i = 0; i < numberOfCampaigns; i++) {
             if (campaigns[i].donatedAmounts[_donor] > 0) {

@@ -7,13 +7,12 @@ import {
   useContractWrite,
 } from "@thirdweb-dev/react";
 import { ethers } from "ethers";
-import { EditionMetadataWithOwnerOutputSchema } from "@thirdweb-dev/sdk";
 
 const StateContext = createContext();
 
 export const StateContextProvider = ({ children }) => {
   const { contract } = useContract(
-    "0xe093BC7159a748B634114E98f08ec9D0215Ef025"
+    "0x4539ed76408FAe5dDaC450b8124284CEEF504326"
   );
   const { mutateAsync: createCampaign } = useContractWrite(
     contract,
@@ -147,6 +146,31 @@ export const StateContextProvider = ({ children }) => {
     return parsedCampaigns;
   };
 
+  const getRefundRequests = async (pId) => {
+    const data = await contract.call("getRefundRequests", [pId]);
+    console.log("refund list:", data);
+    const parsedRequests = [];
+    for (let i = 0; i < data.length; i++) {
+      if (
+        data[i]["requester"] !== "0x0000000000000000000000000000000000000000"
+      ) {
+        parsedRequests.push({
+          requester: data[i]["requester"],
+          amount: ethers.utils.formatEther(data[i]["amount"].toString()),
+          processed: data[i]["processed"],
+        });
+      }
+    }
+    return parsedRequests;
+  };
+
+  const processRefund = async (pId, donor) => {
+    console.log(pId, donor);
+    const data = await contract.call("processRefund", [pId, donor]);
+
+    return data;
+  };
+
   return (
     <StateContext.Provider
       value={{
@@ -160,6 +184,8 @@ export const StateContextProvider = ({ children }) => {
         getDonations,
         refundRequest,
         getDonorCampaigns,
+        getRefundRequests,
+        processRefund,
       }}>
       {children}
     </StateContext.Provider>
