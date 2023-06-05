@@ -12,7 +12,7 @@ const StateContext = createContext();
 
 export const StateContextProvider = ({ children }) => {
   const { contract } = useContract(
-    "0x4539ed76408FAe5dDaC450b8124284CEEF504326"
+    "0x38f2872f323ba5D5d706535c98F592E93851564c"
   );
   const { mutateAsync: createCampaign } = useContractWrite(
     contract,
@@ -22,6 +22,11 @@ export const StateContextProvider = ({ children }) => {
   const { mutateAsync: requestRefund } = useContractWrite(
     contract,
     "requestRefund"
+  );
+
+  const { mutateAsync: processRefund } = useContractWrite(
+    contract,
+    "processRefund"
   );
 
   const address = useAddress();
@@ -164,9 +169,14 @@ export const StateContextProvider = ({ children }) => {
     return parsedRequests;
   };
 
-  const processRefund = async (pId, donor) => {
+  const processApprovalRefund = async (pId, donor) => {
     console.log(pId, donor);
-    const data = await contract.call("processRefund", [pId, donor]);
+    try {
+      const data = await processRefund({ args: [pId, donor] });
+      console.info("contract call success", data);
+    } catch (err) {
+      console.error("contract call failure", err);
+    }
 
     return data;
   };
@@ -205,6 +215,7 @@ export const StateContextProvider = ({ children }) => {
         getRefundRequests,
         processRefund,
         getDonatedHistory,
+        processApprovalRefund,
       }}>
       {children}
     </StateContext.Provider>

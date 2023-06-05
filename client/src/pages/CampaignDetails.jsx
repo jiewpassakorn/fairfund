@@ -18,7 +18,7 @@ const CampaignDetails = () => {
     address,
     refundRequest,
     getRefundRequests,
-    processRefund,
+    processApprovalRefund,
   } = useStateContext();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -99,7 +99,7 @@ const CampaignDetails = () => {
     // console.log("id", id);
     // console.log("donor", donor);
     try {
-      await processRefund(id, donor);
+      await processApprovalRefund(id, donor);
     } catch (error) {}
   };
 
