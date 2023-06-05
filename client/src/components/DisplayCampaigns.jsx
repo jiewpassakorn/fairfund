@@ -84,11 +84,17 @@ const DisplayCampaigns = ({
             mount: { y: 0 },
             unmount: { y: 250 },
           }}>
-          {!isLoading && campaigns.length === 0 && (
-            <p className="font-epilogue font-semibold text-[14px] leading-[30px] text-[#818183]">
-              You have not created any campaigns yet
-            </p>
-          )}
+          {!isLoading &&
+            campaigns.length === 0 &&
+            (selectedTab !== "history" ? (
+              <p className="font-epilogue font-semibold text-[14px] leading-[30px] text-[#818183]">
+                You have not created any campaigns yet
+              </p>
+            ) : (
+              <p className="font-epilogue font-semibold text-[14px] leading-[30px] text-[#818183]">
+                You never donate any campaigns
+              </p>
+            ))}
           {data.map(({ value, filteredcampaigns }) => (
             <TabPanel
               key={value}

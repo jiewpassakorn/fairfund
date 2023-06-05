@@ -11,12 +11,20 @@ import "../index.css";
 const CampaignDetails = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { donate, getDonations, contract, address, refundRequest } =
-    useStateContext();
+  const {
+    donate,
+    getDonations,
+    contract,
+    address,
+    refundRequest,
+    getRefundRequests,
+    processRefund,
+  } = useStateContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [amount, setAmount] = useState("");
   const [donators, setDonators] = useState([]);
+  const [refundLists, setRefundLists] = useState([]);
 
   const remainingDays = daysLeft(state.deadline);
 
@@ -26,8 +34,17 @@ const CampaignDetails = () => {
     setDonators(data);
   };
 
+  const fetchRefundRequest = async () => {
+    const data = await getRefundRequests(state.pId);
+
+    setRefundLists(data);
+  };
+
   useEffect(() => {
-    if (contract) fetchDonators();
+    if (contract) {
+      fetchDonators();
+      fetchRefundRequest();
+    }
   }, [contract, address]);
 
   const handleDonate = async (e) => {
@@ -77,6 +94,14 @@ const CampaignDetails = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleApproval = async (id, donor) => {
+    // console.log("id", id);
+    // console.log("donor", donor);
+    try {
+      await processRefund(id, donor);
+    } catch (error) {}
   };
 
   return (
@@ -202,6 +227,65 @@ const CampaignDetails = () => {
               )}
             </div>
           </div>
+
+          {/* Refund Lists */}
+          <div>
+            <h4 className="font-epilogue font-semibold text-[18px] text-white uppercase">
+              Refund Lists
+            </h4>
+
+            <div className="mt-2 flex flex-col gap-4">
+              {refundLists.length > 0 ? (
+                refundLists.map((item, index) => (
+                  <div
+                    key={`${item.requester}-${index}`}
+                    className="flex justify-between items-center gap-4 bg-gray-600 p-1 rounded-lg bg-opacity-30">
+                    <p className="font-epilogue font-normal text-[16px] text-[#b2b3bd] leading-[26px] break-ll">
+                      {index + 1}. {item.requester.slice(0, 5)}...
+                      {item.requester.slice(-4)}
+                    </p>
+                    <p className="font-epilogue font-normal text-[16px] text-[#808191] leading-[26px] break-ll">
+                      {item.amount}
+                    </p>
+                    {state.owner === address ? (
+                      <div className="flex flex-row gap-[5px]">
+                        <button
+                          type="button"
+                          className="font-epilogue font-normal text-[10px] text-white bg-green-600 p-1 rounded-lg"
+                          onClick={() =>
+                            handleApproval(state.pId, item.requester)
+                          }>
+                          Approved
+                        </button>
+                        <button
+                          type="button"
+                          className="font-epilogue font-normal text-[10px] text-white bg-red-600 p-1 rounded-lg"
+                          onClick={handleApproval}>
+                          Reject
+                        </button>
+                      </div>
+                    ) : item.processed ? (
+                      <p className="font-epilogue font-normal text-[14px] text-green-600 leading-[26px] break-ll">
+                        Refunded
+                      </p>
+                    ) : (
+                      <p className="font-epilogue font-normal text-[14px] text-red-600 leading-[26px] break-ll">
+                        Pending...
+                      </p>
+                    )}
+                  </div>
+                ))
+              ) : remainingDays > 0 ? (
+                <p className="font-epilogue font-normal text-[16px] text-[#808191] leading-[26px] text-justify">
+                  No Refund Request.
+                </p>
+              ) : (
+                <p className="font-epilogue font-normal text-[16px] text-[#808191] leading-[26px] text-justify">
+                  Can not refund this time.
+                </p>
+              )}
+            </div>
+          </div>
         </div>
 
         <div className="flex-1">
@@ -246,14 +330,22 @@ const CampaignDetails = () => {
                 <CustomButton
                   btnType="button"
                   title="OUT OF DATE"
-                  styles="w-full bg-[#8c6dfd]"
+                  styles={` ${
+                    remainingDays > 0
+                      ? "w-full bg-[#8c6dfd]"
+                      : "w-full pointer-events-none bg-gray-300 text-gray-500"
+                  }`}
                 />
               )}
             </div>
             <CustomButton
               btnType="button"
               title="Request Refund"
-              styles="w-full bg-[#8c6dfd] mt-3"
+              styles={`mt-3 ${
+                remainingDays > 0
+                  ? "w-full bg-[#8c6dfd]"
+                  : "w-full pointer-events-none bg-gray-300 text-gray-500"
+              }`}
               handleClick={handleRefundRequest}
             />
             {/* <CustomButton
