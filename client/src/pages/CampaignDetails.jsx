@@ -81,7 +81,6 @@ const CampaignDetails = () => {
     try {
       await refundRequest(state.pId);
       console.log(`Refund requested successfully id = ${state.pId}`);
-      alert("Refund requested successfully");
     } catch (error) {
       if (error.message.includes("user rejected transaction")) {
         alert("Transaction rejected by the user");
