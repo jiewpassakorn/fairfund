@@ -105,9 +105,9 @@ const CampaignDetails = () => {
         alert("Transaction rejected by the user");
       } else {
         console.error(error);
-        alert(
-          "An error occurred during the transaction. Please try again later."
-        );
+        // alert(
+        //   "An error occurred during the transaction. Please try again later."
+        // );
       }
     } finally {
       setIsLoading(false);
