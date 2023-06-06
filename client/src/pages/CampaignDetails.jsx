@@ -97,9 +97,6 @@ const CampaignDetails = () => {
   };
 
   const handleApproval = async (id, donor, amount) => {
-    console.log("id", id);
-    console.log("donor", donor);
-    console.log("amount", amount);
     setIsLoading(true);
     try {
       await processApprovalRefund(id, donor, amount);
@@ -156,10 +153,10 @@ const CampaignDetails = () => {
         </div>
 
         <div className="flex md:w-[150px] w-full flex-wrap justify-between gap-[30px] ">
-          {remainingDays > 0 ? (
+          {remainingDays >= 0 ? (
             <CountBox
               title="Days Left"
-              value={remainingDays > 0 ? remainingDays : "Null"}
+              value={remainingDays >= 0 ? remainingDays : "Null"}
             />
           ) : (
             <CountBox title="Days Ago" value={Math.abs(remainingDays)} />
@@ -229,7 +226,7 @@ const CampaignDetails = () => {
                     </p>
                   </div>
                 ))
-              ) : remainingDays > 0 ? (
+              ) : remainingDays >= 0 ? (
                 <p className="font-epilogue font-normal text-[16px] text-[#808191] leading-[26px] text-justify">
                   No Donators Yet. Be the first one!
                 </p>
@@ -261,10 +258,10 @@ const CampaignDetails = () => {
                       {item.amount}
                     </p>
                     {state.owner === address ? (
-                      <div className="flex flex-row gap-[5px]">
+                      <div className="flex flex-row items-center justify-center gap-[5px]">
                         <button
                           type="button"
-                          className="font-epilogue font-normal text-[10px] text-white bg-green-600 p-1 rounded-lg"
+                          className="font-epilogue font-normal text-[14px] w-[70px] h-[30px] text-white bg-green-600 p-1 rounded-lg flex items-center justify-center"
                           onClick={() =>
                             handleApproval(
                               state.pId,
@@ -272,11 +269,11 @@ const CampaignDetails = () => {
                               item.amount
                             )
                           }>
-                          Approved
+                          Approve
                         </button>
                         <button
                           type="button"
-                          className="font-epilogue font-normal text-[10px] text-white bg-red-600 p-1 rounded-lg"
+                          className="font-epilogue font-normal text-[14px] w-[70px] h-[30px] text-white bg-red-600 p-1 rounded-lg flex items-center justify-center"
                           onClick={handleApproval}>
                           Reject
                         </button>
@@ -292,7 +289,7 @@ const CampaignDetails = () => {
                     )}
                   </div>
                 ))
-              ) : remainingDays > 0 ? (
+              ) : remainingDays >= 0 ? (
                 <p className="font-epilogue font-normal text-[16px] text-[#808191] leading-[26px] text-justify">
                   No Refund Request.
                 </p>
@@ -317,11 +314,11 @@ const CampaignDetails = () => {
             <div className="mt-[10px] ">
               <input
                 type="number"
-                disabled={remainingDays <= 0}
-                placeholder={remainingDays > 0 ? "ETH 0.1" : "Can't Fund"}
+                disabled={remainingDays < 0}
+                placeholder={remainingDays >= 0 ? "ETH 0.1" : "Can't Fund"}
                 step="0.01"
                 className={`w-full py-[10px] sm:px-[20px] px-[15px] outline-none border-[1px] border-[#3a3a43] bg-transparent font-epilogue text-white text-[18px] leading-[30px] placeholder:text-[#4b5264] rounded-[10px]
-                ${remainingDays > 0 ? "" : "cursor-not-allowed"}`}
+                ${remainingDays >= 0 ? "" : "cursor-not-allowed"}`}
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
               />
@@ -336,7 +333,7 @@ const CampaignDetails = () => {
                 </p>
               </div>
 
-              {remainingDays > 0 ? (
+              {remainingDays >= 0 ? (
                 <CustomButton
                   btnType="button"
                   title="Fund Campaign"
@@ -348,7 +345,7 @@ const CampaignDetails = () => {
                   btnType="button"
                   title="OUT OF DATE"
                   styles={` ${
-                    remainingDays > 0
+                    remainingDays >= 0
                       ? "w-full bg-[#8c6dfd]"
                       : "w-full pointer-events-none bg-gray-300 text-gray-500"
                   }`}
@@ -359,7 +356,7 @@ const CampaignDetails = () => {
               btnType="button"
               title="Request Refund"
               styles={`mt-3 ${
-                remainingDays > 0
+                remainingDays >= 0
                   ? "w-full bg-[#8c6dfd]"
                   : "w-full pointer-events-none bg-gray-300 text-gray-500"
               }`}

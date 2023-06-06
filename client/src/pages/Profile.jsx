@@ -59,7 +59,6 @@ const Profile = () => {
       setIsLoading(true);
       const result = await getDonorCampaigns(address);
       setDonorCampaigns(result);
-      // console.log("donorCampaigns ", donorCampaigns);
       setIsLoading(false);
     } catch (error) {
       console.error(error);

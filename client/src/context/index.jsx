@@ -77,7 +77,6 @@ export const StateContextProvider = ({ children }) => {
 
   const getCampaigns = async () => {
     const campaigns = await contract.call("getCampaigns");
-    // console.log("CAMPAIGNS => ",campaigns);
 
     const parsedCampaigns = campaigns.map((campaign, i) => ({
       owner: campaign.owner,
@@ -114,7 +113,6 @@ export const StateContextProvider = ({ children }) => {
   };
 
   const getDonations = async (pId) => {
-    // console.log(pId);
     const donations = await contract.call("getDonators", [pId]);
     const numberOfDonations = donations[0].length;
 

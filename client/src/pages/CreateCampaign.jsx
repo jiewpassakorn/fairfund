@@ -35,7 +35,7 @@ const CreateCampaign = () => {
           target: ethers.utils.parseUnits(form.target, 18),
         });
         setIsLoading(false);
-        //console.log(form);
+
         navigate("/");
       } else {
         alert("Provide valid image URL");
@@ -57,9 +57,7 @@ const CreateCampaign = () => {
               Start a Campaign
             </h1>
           ) : (
-            <button
-              // onClick={connect}
-              className="font-epilogue font-bold sm:text-[25px] text-[18px] leading-[38px] text-white">
+            <button className="font-epilogue font-bold sm:text-[25px] text-[18px] leading-[38px] text-white">
               Please Connect Your Wallet
             </button>
           )}

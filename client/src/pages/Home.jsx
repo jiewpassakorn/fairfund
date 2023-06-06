@@ -19,10 +19,10 @@ const Home = () => {
   };
 
   const availableCampaigns = campaigns.filter(
-    (campaign) => daysLeft(campaign.deadline) > 0
+    (campaign) => daysLeft(campaign.deadline) >= 0
   );
   const unavailableCampaigns = campaigns.filter(
-    (campaign) => daysLeft(campaign.deadline) <= 0
+    (campaign) => daysLeft(campaign.deadline) < 0
   );
 
   const data = [

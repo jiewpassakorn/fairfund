@@ -44,15 +44,15 @@ const FundCard = ({
           <div>
             <span
               className={`inline-flex items-center ${
-                remainingDays > 0
+                remainingDays >= 0
                   ? "text-green-100 bg-green-800"
                   : "text-red-100 bg-red-800"
               }  text-xs font-epilogue px-2.5 py-0.5 rounded-full`}>
               <span
                 className={`w-2 h-2 mr-1 ${
-                  remainingDays > 0 ? "bg-green-500" : "bg-red-500"
+                  remainingDays >= 0 ? "bg-green-500" : "bg-red-500"
                 }  rounded-full`}></span>
-              {remainingDays > 0 ? "Available" : "Unavailable"}
+              {remainingDays >= 0 ? "Available" : "Unavailable"}
             </span>
           </div>
         </div>
@@ -81,11 +81,11 @@ const FundCard = ({
           </div>
           <div className="flex flex-col">
             <h4 className="font-epilogue font-semibold text-[14px] text-[#b2b3bd] leading-[22px]">
-              {remainingDays > 0 ? remainingDays : "OUT OF DATE"}
+              {remainingDays >= 0 ? remainingDays : "OUT OF DATE"}
             </h4>
 
             <p className="mt-[3px] font-epilogue font-normal text-[12px] leading-[18px] text-[#808191] sm:max-w-[120px] truncate">
-              {remainingDays > 0 ? "Days Left" : ""}
+              {remainingDays >= 0 ? "Days Left" : ""}
             </p>
           </div>
         </div>
