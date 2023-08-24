@@ -57,3 +57,8 @@ npm run dev
 3. **getUserCampaigns:** Get your own campaign
 4. **donate:** Donate campaign
 5. **getDonations:** Explore donators on each campaign
+
+![8](https://github.com/jiewpassakorn/fairfund/assets/79156426/6dd42a33-afca-4275-8aca-a566ae427e65)
+![10](https://github.com/jiewpassakorn/fairfund/assets/79156426/df577852-ef45-41bb-af41-6ec64590b043)
+![11](https://github.com/jiewpassakorn/fairfund/assets/79156426/5ba319bd-9d70-4159-aa8e-41d0facad922)
+
